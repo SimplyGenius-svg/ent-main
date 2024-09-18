@@ -1,0 +1,83 @@
+/* Common styles for Sign Up and Sign In pages */
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Dark gradient background */
+    color: white; /* White text color */
+  }
+  
+  .auth-form {
+    background-color: #1a1a1a; /* Dark background for form */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 20px rgba(0, 255, 166, 0.4); /* Glowing box shadow */
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .auth-form h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-align: center;
+    color: #ffffff;
+    background: linear-gradient(45deg, #6200ea, #00ffa6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .auth-form label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .auth-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+  }
+  
+  .auth-form input:focus {
+    box-shadow: 0 0 5px rgba(98, 0, 234, 0.6), 0 0 10px rgba(0, 255, 166, 0.6); /* Focus glow */
+  }
+  
+  .auth-form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff5858;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .auth-form button:hover {
+    background-color: #ff3e3e; /* Darken the button on hover */
+    transform: scale(1.05);
+  }
+
+/* Styling for the additional text and links */
+.auth-text {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #cccccc;
+  }
+  
+  .auth-link {
+    color: #00ffa6;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .auth-link:hover {
+    text-decoration: underline;
+    color: #f857a6; /* Add hover effect */
+  }
+  
