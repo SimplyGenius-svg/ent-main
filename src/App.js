@@ -1,24 +1,40 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './HomePage';
-import SignUp from './SignUp';
-import SignIn from './SignIn';
-import Dashboard from './Dashboard';
-import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute component
-import { AuthProvider } from './AuthContext'; // Import the AuthProvider
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './HomePage'; // Import your home page
+import SignIn from './SignIn'; // Import your sign-in component
+import SignUp from './SignUp'; // Import your sign-up component
+import CreateProfile from './CreateProfile'; // Import your create profile component
+import Dashboard from './Dashboard'; // Import your dashboard component
+import ProtectedRoute from './ProtectedRoute'; // Import your protected route component
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <Router>
+      <Routes>
+        {/* Home page route */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* Sign-in route */}
+        <Route path="/signin" element={<SignIn />} />
+
+        {/* Sign-up route */}
+        <Route path="/signup" element={<SignUp />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        
+
+        {/* Create profile route */}
+        <Route path="/create-profile" element={<CreateProfile />} />
+      </Routes>
+    </Router>
   );
 }
 

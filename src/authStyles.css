@@ -1,83 +1,99 @@
-/* Common styles for Sign Up and Sign In pages */
+/* General Container for Sign-in, Sign-up, and Create Profile Pages */
 .auth-container {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); /* Dark gradient background */
-    color: white; /* White text color */
-  }
-  
-  .auth-form {
-    background-color: #1a1a1a; /* Dark background for form */
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 20px rgba(0, 255, 166, 0.4); /* Glowing box shadow */
-    max-width: 400px;
-    width: 100%;
-  }
-  
-  .auth-form h2 {
-    margin-bottom: 20px;
-    font-size: 1.8rem;
-    text-align: center;
-    color: #ffffff;
-    background: linear-gradient(45deg, #6200ea, #00ffa6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  
-  .auth-form label {
-    display: block;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-  }
-  
-  .auth-form input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-  }
-  
-  .auth-form input:focus {
-    box-shadow: 0 0 5px rgba(98, 0, 234, 0.6), 0 0 10px rgba(0, 255, 166, 0.6); /* Focus glow */
-  }
-  
-  .auth-form button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #ff5858;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  }
-  
-  .auth-form button:hover {
-    background-color: #ff3e3e; /* Darken the button on hover */
-    transform: scale(1.05);
-  }
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
 
-/* Styling for the additional text and links */
-.auth-text {
-    margin-top: 20px;
-    font-size: 1rem;
-    color: #cccccc;
-  }
-  
-  .auth-link {
-    color: #00ffa6;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .auth-link:hover {
-    text-decoration: underline;
-    color: #f857a6; /* Add hover effect */
-  }
-  
+.auth-box {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 8px 15px rgba(0, 255, 166, 0.6);
+  max-width: 500px;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+}
+
+.auth-box h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #ff5858, #00ffa6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-box label {
+  font-size: 1.1rem;
+  color: #f0f0f0;
+  margin-top: 10px;
+  display: block;
+}
+
+.auth-box input, .auth-box select {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  background-color: #333;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.auth-box input:focus, .auth-box select:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(98, 0, 234, 0.5), 0 0 10px rgba(0, 255, 166, 0.5);
+}
+
+/* Interests Section */
+.interests-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.interest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
+  padding: 10px;
+}
+
+.interest-item {
+  background-color: #f3f3f3;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.interest-item.selected {
+  background-color: #6200ea;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+.submit-button {
+  background: linear-gradient(90deg, #f857a6, #ff5858);
+  padding: 12px 25px;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  color: white;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.submit-button:hover {
+  transform: scale(1.05);
+}

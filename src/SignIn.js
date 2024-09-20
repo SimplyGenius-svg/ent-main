@@ -1,23 +1,42 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import './authStyles.css'; // The new CSS file
-
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from 'react-router-dom';
+import { auth } from "./firebase";
+import './Sign.css';
 const SignIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleSignIn = async (event) => {
+    event.preventDefault();
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // Redirect to dashboard after successful sign-in
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message);
+      console.error("Error signing in:", err.message);
+    }
+  };
+
   return (
     <div className="auth-container">
-      <form className="auth-form">
+      <div className="auth-box">
         <h2>Sign In</h2>
-        <label>Email:</label>
-        <input type="email" placeholder="Enter your email" />
-        <label>Password:</label>
-        <input type="password" placeholder="Enter your password" />
-        <button type="submit">Sign In</button>
-
-        {/* Add a link to Sign Up */}
-        <p className="auth-text">
-          Don't have an account? <Link to="/signup" className="auth-link">Create one</Link>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSignIn}>
+          <label>Email</label>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <label>Password</label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button type="submit">Sign In</button>
+        </form>
+        <p>
+          Don’t have an account? <a href="/signup">Create one</a>
         </p>
-      </form>
+      </div>
     </div>
   );
 };
