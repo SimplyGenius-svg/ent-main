@@ -49,27 +49,55 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      {/* Welcome Message */}
-      <div className="welcome-section">
-        {userData && (
-          <>
-            <h1>Welcome, {userData.name}!</h1>
-            <p>You're from the {userData.college} college.</p>
-          </>
-        )}
-      </div>
-
-      {/* Profile Button in Top-Right */}
-      <div className="profile-section">
-        <button className="profile-button" onClick={handleProfileClick}>
-          Profile
-        </button>
+      {/* Sidebar */}
+      <div className="sidebar">
+        <ul>
+          <li>Home</li>
+          <li>Connections</li>
+          <li>Mentors</li>
+          <li>Investors</li>
+          <li>Messages</li>
+        </ul>
       </div>
 
       {/* Main Dashboard Content */}
-      <div className="dashboard-content">
-        <h2>Your Dashboard</h2>
-        <p>Here you can explore features, connect with others, and more.</p>
+      <div className="main-content">
+        <div className="welcome-section">
+          {userData && (
+            <>
+              <h1>Welcome, {userData.name}!</h1>
+              <p>You're from the {userData.college} college.</p>
+            </>
+          )}
+        </div>
+
+        <div className="profile-section">
+          <button className="profile-button" onClick={handleProfileClick}>
+            Profile
+          </button>
+        </div>
+
+        <div className="dashboard-content">
+          <h2>Your Dashboard</h2>
+          <p>Explore features, connect with others, and more.</p>
+
+          {/* In-App Tokens */}
+          <div className="tokens-section">
+            <h3>Your In-App Tokens</h3>
+            <p>{userData ? userData.tokens : 0} tokens available</p>
+            <button className="store-button" onClick={() => navigate('/store')}>
+              Go to Store
+            </button>
+          </div>
+
+          {/* Connections, Profile Visits, Impressions */}
+          <div className="stats-section">
+            <h3>Your Stats</h3>
+            <p>Connections: {userData ? userData.connections : 0}</p>
+            <p>Profile Visits: {userData ? userData.profileVisits : 0}</p>
+            <p>Impressions: {userData ? userData.impressions : 0}</p>
+          </div>
+        </div>
       </div>
 
       {/* Edit Profile Modal */}
@@ -88,3 +116,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
