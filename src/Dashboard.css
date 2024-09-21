@@ -1,40 +1,165 @@
 /* General Dashboard Styles */
 .dashboard-container {
   display: flex;
-  flex-direction: column;
-  padding: 20px;
-  color: #fff;
-  font-family: 'San Francisco', sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+  font-family: 'San Francisco', sans-serif;
   position: relative;
 }
 
-/* Welcome Section Styles */
+/* Sidebar Styles */
+.sidebar {
+  width: 250px;
+  background-color: #1a1a1a;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto; /* Enable scrolling */
+  transition: width 0.3s ease;
+}
+
+.sidebar:hover {
+  width: 270px; /* Expands on hover */
+}
+
+/* Sidebar Content */
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 15px 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #bbb;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.sidebar ul li:hover {
+  color: #00ffa6; /* Bright color on hover */
+  transform: scale(1.1); /* Slight scaling on hover */
+}
+
+/* Icons for Sidebar (example) */
+.sidebar ul li::before {
+  content: "• "; /* Minimalistic symbol */
+  color: #00ffa6; /* Icon color */
+  margin-right: 10px;
+}
+
+/* Main Content Wrapper */
+.main-content {
+  margin-left: 290px; /* Ensure content starts far enough from the sidebar */
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  font-size: 4rem;
+  text-align: left;
+  background: linear-gradient(45deg, #ff5858, #00ffa6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 40px;
+  transition: transform 0.3s ease;
+}
+
+.dashboard-title:hover {
+  transform: scale(1.1); /* Slight animation when hovered */
+}
+
+/* Right Content (Dashboard) */
+.dashboard-content {
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+  margin-left: 50px; /* Ensure clickable content is pushed right */
+  width: calc(100% - 350px); /* Ensure it doesn't touch the sidebar */
+  box-shadow: 0 4px 15px rgba(0, 255, 166, 0.4); /* Add glowing effect */
+}
+
+/* Welcome Section */
 .welcome-section {
-  position: absolute;
-  top: 20px;
-  left: 20px;
+  margin-bottom: 20px;
 }
 
 .welcome-section h1 {
-  font-size: 2.5rem;
-  margin-bottom: 5px;
   background: linear-gradient(45deg, #ff5858, #00ffa6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.welcome-section p {
-  font-size: 1.2rem;
-  color: #cccccc;
+/* Tokens and Stats Sections */
+.tokens-section, .stats-section {
+  margin: 40px 0;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  width: 50%;
+  box-shadow: 0 4px 10px rgba(0, 255, 166, 0.2);
+  margin-left: 80px;
+  transition: transform 0.3s ease;
 }
 
-/* Profile Button Section */
+.tokens-section:hover, .stats-section:hover {
+  transform: scale(1.05);
+}
+
+/* Add icons for stats */
+.stats-section .icon {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.icon-connections::before {
+  content: url('https://img.icons8.com/ios-filled/50/00ffa6/conference-call.png');
+}
+
+.icon-visits::before {
+  content: url('https://img.icons8.com/ios-filled/50/00ffa6/eye.png');
+}
+
+.icon-impressions::before {
+  content: url('https://img.icons8.com/ios-filled/50/00ffa6/fingerprint-scan.png');
+}
+
+.stats-section h3 {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+}
+
+/* Store Button */
+.store-button {
+  background-color: #6200ea;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.store-button:hover {
+  background-color: #bb86fc;
+}
+
+/* Profile Button */
 .profile-section {
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  margin-bottom: 20px;
 }
 
 .profile-button {
@@ -71,6 +196,7 @@
   box-shadow: 0px 4px 15px rgba(0, 255, 166, 0.4);
   width: 400px;
   position: relative;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .close {
@@ -83,4 +209,16 @@
 
 .close:hover {
   color: red;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
