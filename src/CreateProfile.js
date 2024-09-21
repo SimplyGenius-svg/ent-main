@@ -10,6 +10,30 @@ import { auth } from './firebase'
 const interestOptions = [
   { label: 'Animals', emoji: '🐾' },
   { label: 'Music', emoji: '🎶' },
+  { label: 'Sports', emoji: '⚽' },
+  { label: 'Outdoor activities', emoji: '🥾' },
+  { label: 'Dancing', emoji: '💃' },
+  { label: 'Healthy life', emoji: '🥗' },
+  { label: 'Gym & Fitness', emoji: '🏋️' },
+  { label: 'Foreign culture', emoji: '🌍' },
+  { label: 'Gaming', emoji: '🎮' },
+  { label: 'Art', emoji: '🎨' },
+  { label: 'Writing', emoji: '✍️' },
+  { label: 'Ceramics', emoji: '🏺' },
+  { label: 'Cosmos', emoji: '🌌' },
+  { label: 'Architecture', emoji: '🏛️' },
+  { label: 'Food', emoji: '🍽️' },
+  { label: 'Planting', emoji: '🌱' },
+  { label: 'Movie', emoji: '🎬' },
+  { label: 'Science', emoji: '🔬' },
+  { label: 'Camping', emoji: '🏕️' },
+  { label: 'History', emoji: '🏺' },
+  { label: 'Design', emoji: '📐' },
+  { label: 'Photography', emoji: '📷' },
+  { label: 'Spirituality', emoji: '🔮' },
+  { label: 'Yoga', emoji: '🧘' },
+  { label: 'Book', emoji: '📚' },
+  { label: 'Cooking', emoji: '🍳' }
   // Add more interests here
 ];
 
@@ -92,6 +116,19 @@ const handleSubmit = async (e) => {
               <option value="">-- Select College --</option>
               <option value="Business">Business</option>
               <option value="Engineering">Engineering</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Computing, Data Science & Society">Computing, Data Science & Society</option>
+              <option value="Education">Education</option>
+              <option value="Environmental Design">Environmental Design</option>
+              <option value="Information">Information</option>
+              <option value="Journalism">Journalism</option>
+              <option value="Law">Law</option>
+              <option value="Letters & Science">Letters & Science</option>
+              <option value="Natural Resources">Natural Resources</option>
+              <option value="Optometry">Optometry</option>
+              <option value="Public Health">Public Health</option>
+              <option value="Public Policy">Public Policy</option>
+              <option value="Social Welfare">Social Welfare</option>
               {/* Add more college options */}
             </select>
           </div>
