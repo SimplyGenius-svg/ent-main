@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db, auth } from './firebase';
+import { db, auth } from './firebase'; // Firestore and auth from your config
+import { arrayUnion } from 'firebase/firestore'; // For Firestore FieldValue.arrayUnion
 import './Dashboard.css';
-import EditProfile from './EditProfile'; // Import the profile edit component
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [showEditProfile, setShowEditProfile] = useState(false); // For controlling modal visibility
+  const [searchQuery, setSearchQuery] = useState(''); // For searching others
+  const [searchResults, setSearchResults] = useState([]); // To hold search results
+  const [connections, setConnections] = useState([]); // User's existing connections
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +21,7 @@ const Dashboard = () => {
           const doc = await userRef.get();
           if (doc.exists) {
             setUserData(doc.data());
+            setConnections(doc.data().connections || []); // Load user's existing connections
           } else {
             console.log('User data not found');
           }
@@ -39,12 +42,43 @@ const Dashboard = () => {
     return <div>Loading...</div>;
   }
 
-  const handleProfileClick = () => {
-    setShowEditProfile(true);
+  // Function to handle search query change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  const closeProfileModal = () => {
-    setShowEditProfile(false);
+  // Function to perform search for users in Firestore
+  const handleSearch = async () => {
+    try {
+      const usersRef = db.collection('users');
+      const querySnapshot = await usersRef
+        .where('name', '>=', searchQuery) // Search for names starting with the search query
+        .where('name', '<=', searchQuery + '\uf8ff') // Ensure it includes all variations
+        .get();
+
+      const results = [];
+      querySnapshot.forEach((doc) => {
+        if (doc.id !== auth.currentUser.uid) { // Exclude the current user
+          results.push({ id: doc.id, ...doc.data() });
+        }
+      });
+      setSearchResults(results); // Set search results
+    } catch (error) {
+      console.error('Error searching users:', error);
+    }
+  };
+
+  // Function to send connection request
+  const handleConnect = async (userId) => {
+    try {
+      const userRef = db.collection('users').doc(auth.currentUser.uid);
+      await userRef.update({
+        connectionRequests: arrayUnion(userId), // Use Firestore arrayUnion to send a request
+      });
+      alert('Connection request sent!');
+    } catch (error) {
+      console.error('Error sending connection request:', error);
+    }
   };
 
   return (
@@ -71,49 +105,46 @@ const Dashboard = () => {
           )}
         </div>
 
-        <div className="profile-section">
-          <button className="profile-button" onClick={handleProfileClick}>
-            Profile
-          </button>
+        {/* Search for Others Section */}
+        <div className="search-section">
+          <h3>Find Others to Connect With</h3>
+          <input
+            type="text"
+            placeholder="Search for users..."
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <button onClick={handleSearch}>Search</button>
+          <div className="search-results">
+            {searchResults.length > 0 ? (
+              searchResults.map((result) => (
+                <div key={result.id} className="search-result-item">
+                  <p>{result.name}</p>
+                  <button onClick={() => handleConnect(result.id)}>Connect</button>
+                </div>
+              ))
+            ) : (
+              <p>No users found</p>
+            )}
+          </div>
         </div>
 
-        <div className="dashboard-content">
-          <h2>Your Dashboard</h2>
-          <p>Explore features, connect with others, and more.</p>
-
-          {/* In-App Tokens */}
-          <div className="tokens-section">
-            <h3>Your In-App Tokens</h3>
-            <p>{userData ? userData.tokens : 0} tokens available</p>
-            <button className="store-button" onClick={() => navigate('/store')}>
-              Go to Store
-            </button>
-          </div>
-
-          {/* Connections, Profile Visits, Impressions */}
-          <div className="stats-section">
-            <h3>Your Stats</h3>
-            <p>Connections: {userData ? userData.connections : 0}</p>
-            <p>Profile Visits: {userData ? userData.profileVisits : 0}</p>
-            <p>Impressions: {userData ? userData.impressions : 0}</p>
-          </div>
+        {/* Existing Connections Section */}
+        <div className="connections-section">
+          <h3>Your Connections</h3>
+          {connections.length > 0 ? (
+            connections.map((connection) => (
+              <div key={connection.id} className="connection-item">
+                <p>{connection.name}</p>
+              </div>
+            ))
+          ) : (
+            <p>You have no connections yet</p>
+          )}
         </div>
       </div>
-
-      {/* Edit Profile Modal */}
-      {showEditProfile && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeProfileModal}>
-              &times;
-            </span>
-            <EditProfile userData={userData} closeProfileModal={closeProfileModal} />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
 
 export default Dashboard;
-
