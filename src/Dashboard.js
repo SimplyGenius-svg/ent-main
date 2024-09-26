@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db, auth } from './firebase'; // Firestore and auth from your config
-import { arrayUnion } from 'firebase/firestore'; // For Firestore FieldValue.arrayUnion
+import { db, auth } from './firebase'; // Firebase configuration
+import { collection, query, where, getDocs } from 'firebase/firestore'; // Import Firestore methods
 import './Dashboard.css';
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState(''); // For searching others
-  const [searchResults, setSearchResults] = useState([]); // To hold search results
-  const [connections, setConnections] = useState([]); // User's existing connections
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const navigate = useNavigate();
 
+  // Fetch user data on page load
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const user = auth.currentUser;
         if (user) {
-          const userRef = db.collection('users').doc(user.uid);
-          const doc = await userRef.get();
-          if (doc.exists) {
-            setUserData(doc.data());
-            setConnections(doc.data().connections || []); // Load user's existing connections
+          // Assuming you have a users collection and each document represents a user
+          const userRef = collection(db, 'users'); 
+          const docSnap = await getDocs(query(userRef, where('uid', '==', user.uid)));
+          if (!docSnap.empty) {
+            const userDoc = docSnap.docs[0].data();
+            setUserData(userDoc);
           } else {
             console.log('User data not found');
           }
@@ -38,52 +40,49 @@ const Dashboard = () => {
     fetchUserData();
   }, [navigate]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  // Function to handle search query change
+  // Handle search input changes
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  // Function to perform search for users in Firestore
+  // Modular Firestore query for searching users
   const handleSearch = async () => {
+    if (searchQuery.trim() === '') {
+      console.log('Search query is empty');
+      return;
+    }
+
     try {
-      const usersRef = db.collection('users');
-      const querySnapshot = await usersRef
-        .where('name', '>=', searchQuery) // Search for names starting with the search query
-        .where('name', '<=', searchQuery + '\uf8ff') // Ensure it includes all variations
-        .get();
+      console.log('Executing search for:', searchQuery);
+      const usersRef = collection(db, 'users'); // Reference to the 'users' collection
+      const q = query(usersRef, where('name', '>=', searchQuery), where('name', '<=', searchQuery + '\uf8ff'));
+      const querySnapshot = await getDocs(q);
 
       const results = [];
       querySnapshot.forEach((doc) => {
-        if (doc.id !== auth.currentUser.uid) { // Exclude the current user
+        if (doc.id !== auth.currentUser.uid) { // Exclude current user
           results.push({ id: doc.id, ...doc.data() });
         }
       });
-      setSearchResults(results); // Set search results
+
+      console.log('Search results:', results);
+      setSearchResults(results);
     } catch (error) {
       console.error('Error searching users:', error);
     }
   };
 
-  // Function to send connection request
-  const handleConnect = async (userId) => {
-    try {
-      const userRef = db.collection('users').doc(auth.currentUser.uid);
-      await userRef.update({
-        connectionRequests: arrayUnion(userId), // Use Firestore arrayUnion to send a request
-      });
-      alert('Connection request sent!');
-    } catch (error) {
-      console.error('Error sending connection request:', error);
-    }
+  // Toggle theme between light and dark mode
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
       <div className="sidebar">
         <ul>
           <li>Home</li>
@@ -92,20 +91,19 @@ const Dashboard = () => {
           <li>Investors</li>
           <li>Messages</li>
         </ul>
+
+        <button className="theme-toggle-btn" onClick={toggleTheme}>
+          {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
+        </button>
       </div>
 
-      {/* Main Dashboard Content */}
       <div className="main-content">
         <div className="welcome-section">
-          {userData && (
-            <>
-              <h1>Welcome, {userData.name}!</h1>
-              <p>You're from the {userData.college} college.</p>
-            </>
-          )}
+          <h1>Welcome, {userData?.name}!</h1>
+          <p>You're from {userData?.college}.</p>
         </div>
 
-        {/* Search for Others Section */}
+        {/* Search Section */}
         <div className="search-section">
           <h3>Find Others to Connect With</h3>
           <input
@@ -115,32 +113,22 @@ const Dashboard = () => {
             onChange={handleSearchChange}
           />
           <button onClick={handleSearch}>Search</button>
+
+          {/* Display Search Results */}
           <div className="search-results">
             {searchResults.length > 0 ? (
               searchResults.map((result) => (
                 <div key={result.id} className="search-result-item">
                   <p>{result.name}</p>
-                  <button onClick={() => handleConnect(result.id)}>Connect</button>
+                  <button onClick={() => console.log('Connect with', result.name)}>
+                    Connect
+                  </button>
                 </div>
               ))
             ) : (
               <p>No users found</p>
             )}
           </div>
-        </div>
-
-        {/* Existing Connections Section */}
-        <div className="connections-section">
-          <h3>Your Connections</h3>
-          {connections.length > 0 ? (
-            connections.map((connection) => (
-              <div key={connection.id} className="connection-item">
-                <p>{connection.name}</p>
-              </div>
-            ))
-          ) : (
-            <p>You have no connections yet</p>
-          )}
         </div>
       </div>
     </div>
