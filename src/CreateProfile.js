@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './authStyles.css';
+import './styles/authStyles.css';
 import { db } from './firebase';
 import { collection, addDoc } from "firebase/firestore"; // Import Firestore functions
 import { doc, setDoc } from 'firebase/firestore'; // Import Firestore functions

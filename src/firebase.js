@@ -1,6 +1,7 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore"; // Updated import for Firestore
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 
 // Your web app's Firebase configuration
@@ -16,8 +17,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);  // Correct Firestore initialization
-const auth = getAuth(app);
+const db = getFirestore(app); // Firestore database
+const auth = getAuth(app); // Authentication
+const storage = getStorage(app); // Storage for profile images
 
-export { db, auth };
-
+export { db, auth, storage };

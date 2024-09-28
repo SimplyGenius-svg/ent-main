@@ -1,89 +1,129 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { db, auth } from './firebase'; // Firebase configuration
-import { collection, query, where, getDocs } from 'firebase/firestore'; // Import Firestore methods
-import './Dashboard.css';
+import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { db, auth, storage } from './firebase';
+import './styles/Dashboard.css';
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [user, setUser] = useState(null);
+  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    college: '',
+    expertise: '',
+    profilePic: null,
+  });
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const navigate = useNavigate();
 
-  // Fetch user data on page load
+  // Apply theme on component mount
   useEffect(() => {
+    document.body.className = `${theme}-mode`;
+  }, [theme]);
+
+  // Define the toggleTheme function to switch between light and dark mode
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      navigate('/login');
+      return;
+    }
+
     const fetchUserData = async () => {
       try {
-        const user = auth.currentUser;
-        if (user) {
-          // Assuming you have a users collection and each document represents a user
-          const userRef = collection(db, 'users'); 
-          const docSnap = await getDocs(query(userRef, where('uid', '==', user.uid)));
-          if (!docSnap.empty) {
-            const userDoc = docSnap.docs[0].data();
-            setUserData(userDoc);
-          } else {
-            console.log('User data not found');
-          }
-        } else {
-          navigate('/signin');
+        const userDocRef = doc(db, 'users', auth.currentUser.uid);
+        const userSnapshot = await getDoc(userDocRef);
+        if (userSnapshot.exists()) {
+          const userData = userSnapshot.data();
+          const profilePicUrl = await getDownloadURL(storageRef(storage, `profilePictures/${auth.currentUser.uid}`));
+          setUser({ ...userData, profilePic: profilePicUrl });
+          setFormData({ ...userData, profilePic: profilePicUrl });
         }
       } catch (error) {
-        console.error('Error fetching user data:', error);
-      } finally {
-        setLoading(false);
+        console.error("Error fetching user data:", error);
       }
     };
 
     fetchUserData();
   }, [navigate]);
 
-  // Handle search input changes
-  const handleSearchChange = (e) => {
-    setSearchQuery(e.target.value);
+  const handleProfilePictureClick = () => {
+    setIsEditProfileVisible(true);
   };
 
-  // Modular Firestore query for searching users
-  const handleSearch = async () => {
-    if (searchQuery.trim() === '') {
-      console.log('Search query is empty');
-      return;
-    }
+  const handleCloseModal = () => {
+    setIsEditProfileVisible(false);
+  };
 
+  // Handle form input changes
+  const handleInputChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Handle profile picture upload
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, profilePic: e.target.files[0] });
+  };
+
+  // Save profile changes to Firestore and Firebase Storage
+  const handleSaveProfile = async () => {
+    setIsSaving(true);
     try {
-      console.log('Executing search for:', searchQuery);
-      const usersRef = collection(db, 'users'); // Reference to the 'users' collection
-      const q = query(usersRef, where('name', '>=', searchQuery), where('name', '<=', searchQuery + '\uf8ff'));
-      const querySnapshot = await getDocs(q);
+      const userDocRef = doc(db, 'users', auth.currentUser.uid);
 
-      const results = [];
-      querySnapshot.forEach((doc) => {
-        if (doc.id !== auth.currentUser.uid) { // Exclude current user
-          results.push({ id: doc.id, ...doc.data() });
-        }
-      });
+      // Upload profile picture if changed
+      if (formData.profilePic && typeof formData.profilePic !== 'string') {
+        const imageRef = storageRef(storage, `profilePictures/${auth.currentUser.uid}`);
+        const uploadTask = uploadBytesResumable(imageRef, formData.profilePic);
 
-      console.log('Search results:', results);
-      setSearchResults(results);
+        uploadTask.on(
+          'state_changed',
+          (snapshot) => {
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            setUploadProgress(progress);
+          },
+          (error) => {
+            console.error('Error uploading image:', error);
+          },
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            await updateDoc(userDocRef, { ...formData, profilePic: downloadURL });
+            setUser({ ...formData, profilePic: downloadURL });
+            setIsEditProfileVisible(false);
+            setIsSaving(false);
+          }
+        );
+      } else {
+        await updateDoc(userDocRef, formData);
+        setUser(formData);
+        setIsEditProfileVisible(false);
+        setIsSaving(false);
+      }
     } catch (error) {
-      console.error('Error searching users:', error);
+      console.error('Error saving profile:', error);
+      setIsSaving(false);
     }
   };
-
-  // Toggle theme between light and dark mode
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  };
-
-  if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard">
       <div className="sidebar">
+        <div className="profile-container">
+          <img
+            src={user?.profilePic || 'default-profile.png'}
+            alt="Profile"
+            className="profile-pic"
+            onClick={handleProfilePictureClick}
+          />
+        </div>
         <ul>
           <li>Home</li>
           <li>Connections</li>
@@ -91,46 +131,67 @@ const Dashboard = () => {
           <li>Investors</li>
           <li>Messages</li>
         </ul>
-
-        <button className="theme-toggle-btn" onClick={toggleTheme}>
-          {theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode'}
-        </button>
+      </div>
+      <div className="main-content">
+        <h1>Welcome, {user?.name}!</h1>
+        <p>College: {user?.college}</p>
+        <p>Expertise: {user?.expertise}</p>
       </div>
 
-      <div className="main-content">
-        <div className="welcome-section">
-          <h1>Welcome, {userData?.name}!</h1>
-          <p>You're from {userData?.college}.</p>
+      {/* Dark/Light Mode Toggle */}
+      <div className="toggle-container" onClick={toggleTheme}>
+        <span className="toggle-label">Dark Mode</span>
+        <div className="toggle-switch">
+          <div className="switch-ball"></div>
         </div>
+      </div>
 
-        {/* Search Section */}
-        <div className="search-section">
-          <h3>Find Others to Connect With</h3>
-          <input
-            type="text"
-            placeholder="Search for users..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <button onClick={handleSearch}>Search</button>
-
-          {/* Display Search Results */}
-          <div className="search-results">
-            {searchResults.length > 0 ? (
-              searchResults.map((result) => (
-                <div key={result.id} className="search-result-item">
-                  <p>{result.name}</p>
-                  <button onClick={() => console.log('Connect with', result.name)}>
-                    Connect
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>No users found</p>
+      {/* Edit Profile Modal */}
+      {isEditProfileVisible && (
+        <div className="modal-overlay" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2>Edit Profile</h2>
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              College:
+              <input
+                type="text"
+                name="college"
+                value={formData.college}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Expertise:
+              <input
+                type="text"
+                name="expertise"
+                value={formData.expertise}
+                onChange={handleInputChange}
+              />
+            </label>
+            <label>
+              Profile Picture:
+              <input type="file" onChange={handleFileChange} />
+            </label>
+            {uploadProgress > 0 && (
+              <progress value={uploadProgress} max="100">{uploadProgress}%</progress>
             )}
+            <button onClick={handleCloseModal} className="close-btn">Close</button>
+            <button onClick={handleSaveProfile} className="edit-btn" disabled={isSaving}>
+              {isSaving ? 'Saving...' : 'Save Profile'}
+            </button>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
