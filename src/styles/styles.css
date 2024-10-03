@@ -1,52 +1,43 @@
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500&family=Sora:wght@400;700&display=swap');
-
 /* General Styles */
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Sora', sans-serif; /* Web3-focused font */
+  font-family: 'Sora', sans-serif;
   background-color: #000000;
   color: #ffffff;
-  height: 100%; /* Ensure the body takes the full height */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  height: 100%;
+  overflow-x: hidden !important; /* Force-disable horizontal scroll */
+  overflow-y: auto !important; /* Force-enable vertical scrolling */
   box-sizing: border-box;
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure the body expands to full viewport height */
-  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Container */
 .home-container {
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Let the container expand */
+  flex-grow: 1;
   text-align: center;
-  /* Remove overflow-y: auto */
+  min-height: 100vh;
 }
 
 /* Header */
 .header {
-  background: linear-gradient(180deg, #000000, #1a1a1a); /* Gradient background for header */
+  background: linear-gradient(180deg, #000000, #1a1a1a);
   padding: 20px 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: sticky; /* Keep header visible on scroll */
+  position: sticky;
   top: 0;
   z-index: 1000;
 }
 
 .logo-text {
-  font-family: 'Baloo 2', sans-serif; /* Playful font for logo */
+  font-family: 'Baloo 2', sans-serif;
   font-size: 2rem;
   font-weight: 500;
   color: white;
-  text-decoration: none; /* Remove the underline */
+  text-decoration: none;
 }
 
 .navbar a {
@@ -59,44 +50,45 @@ body {
 }
 
 .navbar a:hover {
-  color: #00FFCC; /* Light neon green on hover */
+  color: #00FFCC;
 }
 
 /* Hero Section */
 .hero {
-  padding: 100px 20px;
-  background: linear-gradient(180deg, #000000, #111111); /* Gradient for hero section */
+  padding: 80px 20px;
+  background: linear-gradient(180deg, #000000, #111111);
   color: white;
   text-align: center;
+  flex-grow: 1;
 }
 
 .hero h1 {
-  font-family: 'Sora', sans-serif; /* Web3-focused font */
+  font-family: 'Sora', sans-serif;
   font-size: 3.5rem;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .hero p {
   font-family: 'Sora', sans-serif;
   font-size: 1.2rem;
   color: #cccccc;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 }
 
 .hero-buttons {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 15px;
 }
 
 /* CTA Buttons */
 .cta-button {
-  background: linear-gradient(90deg, #00FFCC, #00B3FF); /* Neon gradient */
+  background: linear-gradient(90deg, #00FFCC, #00B3FF);
   color: white;
   border: none;
   border-radius: 30px;
-  padding: 15px 30px;
+  padding: 12px 25px;
   font-size: 1rem;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
@@ -107,25 +99,9 @@ body {
   box-shadow: 0 8px 15px rgba(0, 255, 204, 0.4);
 }
 
-.cta-button-outline {
-  background: none;
-  color: #00FFCC;
-  border: 2px solid #00FFCC;
-  padding: 15px 30px;
-  border-radius: 30px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.cta-button-outline:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 15px rgba(0, 255, 204, 0.4);
-}
-
 /* Features Section */
 .features-section {
-  padding: 60px 20px;
+  padding: 40px 20px; /* Reduced padding */
   background-color: #111111;
   color: white;
 }
@@ -133,12 +109,11 @@ body {
 .features-grid {
   display: flex;
   justify-content: space-around;
-  gap: 40px;
-  flex-wrap: wrap;
+  gap: 30px; /* Reduced gap */
 }
 
 .feature-item {
-  width: 280px;
+  width: 250px; /* Adjusted width */
   padding: 20px;
   background-color: #1a1a1a;
   border-radius: 15px;
@@ -166,7 +141,7 @@ body {
 
 /* About Us Section */
 .about-section {
-  padding: 60px 20px;
+  padding: 40px 20px; /* Reduced padding */
   background-color: #000000;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -175,7 +150,7 @@ body {
   font-family: 'Sora', sans-serif;
   font-size: 2.5rem;
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced margin */
 }
 
 .about-section p {
@@ -184,11 +159,12 @@ body {
   color: #cccccc;
   max-width: 700px;
   margin: 0 auto;
+  text-align: center; /* Ensures the text is centered */
 }
 
 /* Careers Section */
 .careers-section {
-  padding: 60px 20px;
+  padding: 40px 20px; /* Reduced padding */
   background-color: #111111;
 }
 
@@ -196,7 +172,7 @@ body {
   font-family: 'Sora', sans-serif;
   font-size: 2.5rem;
   color: white;
-  margin-bottom: 20px;
+  margin-bottom: 15px; /* Reduced margin */
 }
 
 .careers-section p {
@@ -259,3 +235,4 @@ body {
     padding: 12px 20px;
   }
 }
+
