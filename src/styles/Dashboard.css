@@ -218,3 +218,25 @@ body.dark-mode {
   --button-bg: #00a3ff; /* Neon blue for buttons */
   --modal-bg: #1f2123;
 }
+
+
+.quest-container, .level-container {
+  border: 2px solid #ddd;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.quest-container button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.quest-container button:hover {
+  background-color: #218838;
+}

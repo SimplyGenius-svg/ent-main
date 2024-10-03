@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
-import './styles/Dashboard.css';
+import { Link } from 'react-router-dom';
+import './styles/Dashboard.css';  // Keep the correct path to your dashboard CSS
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -21,8 +22,10 @@ const Dashboard = () => {
 
   // Apply theme on component mount
   useEffect(() => {
-    document.body.className = `${theme}-mode`;
-  }, [theme]);
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = `${currentTheme}-mode`;
+  }, []);
+  
 
   // Define the toggleTheme function to switch between light and dark mode
   const toggleTheme = () => {
@@ -126,6 +129,9 @@ const Dashboard = () => {
         </div>
         <ul>
           <li>Home</li>
+          <li>
+            <Link to="/build-profile">Let's Match</Link>
+          </li>
           <li>Connections</li>
           <li>Mentors</li>
           <li>Investors</li>

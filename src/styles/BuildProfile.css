@@ -1,0 +1,44 @@
+.build-profile-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background-color);
+}
+
+.build-profile-form {
+  background-color: var(--form-bg);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.build-profile-form label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.build-profile-form input,
+.build-profile-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.build-profile-form button {
+  padding: 10px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.build-profile-form button:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+}
