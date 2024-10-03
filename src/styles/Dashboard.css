@@ -9,13 +9,14 @@ body {
   font-family: 'Sora', sans-serif;
   background-color: #111;
   color: #ffffff;
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
+  overflow-y: auto; /* Enable scrolling */
 }
 
+/* Container */
 .dashboard-container {
   display: flex;
-  min-height: 100vh;
+  min-height: 100vh; /* Ensure the container takes up the full viewport height */
 }
 
 /* Sidebar */
@@ -26,6 +27,7 @@ body {
   position: fixed;
   height: 100vh;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto; /* Enable scrolling for the sidebar if necessary */
 }
 
 .profile-container {
@@ -70,7 +72,8 @@ body {
 .main-content {
   margin-left: 250px;
   padding: 40px;
-  flex: 1;
+  flex-grow: 1;
+  overflow-y: auto; /* Enable scrolling in main content if necessary */
 }
 
 h1 {

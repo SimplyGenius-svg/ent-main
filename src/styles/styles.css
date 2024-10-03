@@ -2,22 +2,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500&family=Sora:wght@400;700&display=swap');
 
 /* General Styles */
-body, html {
+html, body {
   margin: 0;
   padding: 0;
   font-family: 'Sora', sans-serif; /* Web3-focused font */
   background-color: #000000;
   color: #ffffff;
+  height: 100%; /* Ensure the body takes the full height */
+  overflow-x: hidden; /* Disable horizontal scroll */
   box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 /* Container */
 .home-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  justify-content: space-between;
+  flex-grow: 1;
   text-align: center;
+  min-height: 100vh; /* Ensure it takes full height of the viewport */
+  overflow-y: auto; /* Ensure vertical scrolling */
 }
 
 /* Header */
@@ -27,6 +37,9 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky; /* Keep header visible on scroll */
+  top: 0;
+  z-index: 1000;
 }
 
 .logo-text {
@@ -36,7 +49,6 @@ body, html {
   color: white;
   text-decoration: none; /* Remove the underline */
 }
-
 
 .navbar a {
   color: white;
@@ -57,6 +69,7 @@ body, html {
   background: linear-gradient(180deg, #000000, #111111); /* Gradient for hero section */
   color: white;
   text-align: center;
+  flex-grow: 1; /* Allow the hero section to grow */
 }
 
 .hero h1 {
@@ -123,6 +136,7 @@ body, html {
   display: flex;
   justify-content: space-around;
   gap: 40px;
+  flex-wrap: wrap;
 }
 
 .feature-item {
@@ -217,6 +231,7 @@ body, html {
   padding: 20px;
   text-align: center;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .footer p {
