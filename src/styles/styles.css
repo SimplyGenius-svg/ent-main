@@ -16,7 +16,7 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* Ensure the body expands to full viewport height */
   overflow-y: auto; /* Enable vertical scrolling */
 }
 
@@ -24,10 +24,9 @@ body {
 .home-container {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex-grow: 1; /* Let the container expand */
   text-align: center;
-  min-height: 100vh; /* Ensure it takes full height of the viewport */
-  overflow-y: auto; /* Ensure vertical scrolling */
+  /* Remove overflow-y: auto */
 }
 
 /* Header */
@@ -69,7 +68,6 @@ body {
   background: linear-gradient(180deg, #000000, #111111); /* Gradient for hero section */
   color: white;
   text-align: center;
-  flex-grow: 1; /* Allow the hero section to grow */
 }
 
 .hero h1 {

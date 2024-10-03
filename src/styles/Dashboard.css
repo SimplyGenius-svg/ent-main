@@ -1,181 +1,257 @@
-/* General Resets */
-* {
-  box-sizing: border-box;
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+/* General Styles */
+html, body {
   margin: 0;
   padding: 0;
-}
-
-body {
   font-family: 'Sora', sans-serif;
-  background-color: #111;
+  background-color: #000000;
   color: #ffffff;
   height: 100%;
-  overflow-y: auto; /* Enable scrolling */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: auto; /* Enable vertical scrolling */
+  box-sizing: border-box;
 }
 
 /* Container */
-.dashboard-container {
+.home-container {
   display: flex;
+  flex-direction: column;
   min-height: 100vh; /* Ensure the container takes up the full viewport height */
+  justify-content: flex-start;
 }
 
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background-color: #1d1f21;
-  padding: 30px;
-  position: fixed;
-  height: 100vh;
-  border-right: 1px solid rgba(255, 255, 255, 0.1);
-  overflow-y: auto; /* Enable scrolling for the sidebar if necessary */
+/* Header */
+.header {
+  background: linear-gradient(180deg, #000000, #1a1a1a); /* Gradient background for header */
+  padding: 20px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky; /* Keep header visible on scroll */
+  top: 0;
+  z-index: 1000;
 }
 
-.profile-container {
-  text-align: center;
-  margin-bottom: 30px;
+.logo-text {
+  font-family: 'Baloo 2', sans-serif; /* Playful font for logo */
+  font-size: 2rem;
+  font-weight: 500;
+  color: white;
+  text-decoration: none; /* Remove the underline */
 }
 
-.profile-pic {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  margin-bottom: 15px;
-  border: 3px solid #00ffa6;
-  cursor: pointer;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.sidebar ul li {
-  margin: 20px 0;
-}
-
-.sidebar ul li a {
+.navbar a {
+  color: white;
+  margin: 0 20px;
   text-decoration: none;
-  color: #ffffff;
-  display: block;
-  padding: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  transition: background 0.3s ease;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
 }
 
-.sidebar ul li a:hover {
-  background: linear-gradient(135deg, #00ffa6, #00a3ff);
-  color: #000;
+.navbar a:hover {
+  color: #00FFCC; /* Light neon green on hover */
 }
 
-/* Main Content */
-.main-content {
-  margin-left: 250px;
-  padding: 40px;
+/* Hero Section */
+.hero {
+  padding: 100px 20px;
+  background: linear-gradient(180deg, #000000, #111111); /* Gradient for hero section */
+  color: white;
+  text-align: center;
   flex-grow: 1;
-  overflow-y: auto; /* Enable scrolling in main content if necessary */
 }
 
-h1 {
-  font-size: 2.5rem;
+.hero h1 {
+  font-family: 'Sora', sans-serif; /* Web3-focused font */
+  font-size: 3.5rem;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
-/* Dashboard View */
-.dashboard-view {
-  padding: 40px;
+.hero p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.2rem;
+  color: #cccccc;
+  margin-bottom: 40px;
 }
 
-.dashboard-sections {
+.hero-buttons {
   display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* CTA Buttons */
+.cta-button {
+  background: linear-gradient(90deg, #00FFCC, #00B3FF); /* Neon gradient */
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 255, 204, 0.4);
+}
+
+.cta-button-outline {
+  background: none;
+  color: #00FFCC;
+  border: 2px solid #00FFCC;
+  padding: 15px 30px;
+  border-radius: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cta-button-outline:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 255, 204, 0.4);
+}
+
+/* Features Section */
+.features-section {
+  padding: 60px 20px;
+  background-color: #111111;
+  color: white;
+  flex-grow: 1;
+  overflow: hidden; /* Remove any unnecessary overflow restrictions */
+}
+
+.features-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
   flex-wrap: wrap;
-  gap: 30px;
 }
 
-.section {
-  background-color: rgba(255, 255, 255, 0.08);
+.feature-item {
+  width: 280px;
   padding: 20px;
-  border-radius: 12px;
-  flex: 1;
-  min-width: 250px;
+  background-color: #1a1a1a;
+  border-radius: 15px;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
 }
 
-.section:hover {
+.feature-item:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 30px rgba(0, 255, 166, 0.4);
 }
 
-.section h2 {
-  font-size: 1.8rem;
+.feature-item h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.5rem;
+  color: #00FFCC;
   margin-bottom: 10px;
 }
 
-.section p {
+.feature-item p {
+  font-family: 'Sora', sans-serif;
   font-size: 1rem;
   color: #cccccc;
 }
 
-/* Modal Styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* About Us Section */
+.about-section {
+  padding: 60px 20px;
+  background-color: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.modal-content {
-  background-color: #1d1f21;
-  padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 255, 166, 0.4);
-  width: 500px;
-  max-width: 100%;
-}
-
-.modal-content label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 1rem;
-}
-
-.modal-content input,
-.modal-content select {
-  width: 100%;
-  padding: 10px;
+.about-section h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.5rem;
+  color: white;
   margin-bottom: 20px;
-  background-color: #333;
-  border: none;
-  border-radius: 8px;
-  color: white;
 }
 
-.save-button, .cancel-button {
-  background-color: #00ffa6;
+.about-section p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.1rem;
+  color: #cccccc;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Careers Section */
+.careers-section {
+  padding: 60px 20px;
+  background-color: #111111;
+}
+
+.careers-section h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.5rem;
   color: white;
-  padding: 12px 25px;
-  border-radius: 30px;
-  cursor: pointer;
-  width: 100%;
-  border: none;
+  margin-bottom: 20px;
+}
+
+.careers-section p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.1rem;
+  color: #cccccc;
+}
+
+.cta-link {
+  display: inline-block;
   margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #00FFCC;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
-.cancel-button {
-  background-color: #ff5858;
+.cta-link:hover {
+  background-color: #00B3FF;
 }
 
-.save-button:hover, .cancel-button:hover {
-  background-color: #00a3ff;
+/* Footer */
+.footer {
+  background-color: #000000;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
-.cancel-button:hover {
-  background-color: #ff4c4c;
+.footer p {
+  font-family: 'Sora', sans-serif;
+  color: #888888;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .features-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .feature-item {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .cta-button, .cta-button-outline {
+    font-size: 0.9rem;
+    padding: 12px 20px;
+  }
 }
