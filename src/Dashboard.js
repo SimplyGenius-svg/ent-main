@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
-import { Link } from 'react-router-dom';
-import './styles/Dashboard.css';  // Keep the correct path to your dashboard CSS
+import './styles/Dashboard.css';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
+  const [currentView, setCurrentView] = useState('dashboard');  // Track the current view
   const [formData, setFormData] = useState({
     name: '',
     college: '',
@@ -16,23 +16,7 @@ const Dashboard = () => {
     profilePic: null,
   });
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [isSaving, setIsSaving] = useState(false);
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
   const navigate = useNavigate();
-
-  // Apply theme on component mount
-  useEffect(() => {
-    const currentTheme = localStorage.getItem('theme') || 'light';
-    document.body.className = `${currentTheme}-mode`;
-  }, []);
-  
-
-  // Define the toggleTheme function to switch between light and dark mode
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-  };
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -58,6 +42,7 @@ const Dashboard = () => {
     fetchUserData();
   }, [navigate]);
 
+  // Handle profile picture click to open the edit profile modal
   const handleProfilePictureClick = () => {
     setIsEditProfileVisible(true);
   };
@@ -66,23 +51,25 @@ const Dashboard = () => {
     setIsEditProfileVisible(false);
   };
 
-  // Handle form input changes
+  const handleNavClick = (view) => {
+    setCurrentView(view);  // Switch between dashboard, connect, mentor hub, investor hub, etc.
+  };
+
+  // Handle input changes for editing the profile
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle profile picture upload
+  // Handle profile picture change
   const handleFileChange = (e) => {
     setFormData({ ...formData, profilePic: e.target.files[0] });
   };
 
-  // Save profile changes to Firestore and Firebase Storage
+  // Save profile changes
   const handleSaveProfile = async () => {
-    setIsSaving(true);
     try {
       const userDocRef = doc(db, 'users', auth.currentUser.uid);
 
-      // Upload profile picture if changed
       if (formData.profilePic && typeof formData.profilePic !== 'string') {
         const imageRef = storageRef(storage, `profilePictures/${auth.currentUser.uid}`);
         const uploadTask = uploadBytesResumable(imageRef, formData.profilePic);
@@ -101,23 +88,21 @@ const Dashboard = () => {
             await updateDoc(userDocRef, { ...formData, profilePic: downloadURL });
             setUser({ ...formData, profilePic: downloadURL });
             setIsEditProfileVisible(false);
-            setIsSaving(false);
           }
         );
       } else {
         await updateDoc(userDocRef, formData);
         setUser(formData);
         setIsEditProfileVisible(false);
-        setIsSaving(false);
       }
     } catch (error) {
       console.error('Error saving profile:', error);
-      setIsSaving(false);
     }
   };
 
   return (
-    <div className="dashboard">
+    <div className="dashboard-container">
+      {/* Sidebar */}
       <div className="sidebar">
         <div className="profile-container">
           <img
@@ -126,78 +111,120 @@ const Dashboard = () => {
             className="profile-pic"
             onClick={handleProfilePictureClick}
           />
+          <h3>{user?.name}</h3>
+          <p>{user?.college} | Expertise: {user?.expertise}</p>
         </div>
         <ul>
-          <li>Home</li>
-          <li>
-            <Link to="/build-profile">Let's Match</Link>
-          </li>
-          <li>Connections</li>
-          <li>Mentors</li>
-          <li>Investors</li>
-          <li>Messages</li>
+          <li><a onClick={() => handleNavClick('dashboard')}>Dashboard</a></li>
+          <li><a onClick={() => handleNavClick('connect')}>Connect</a></li>
+          <li><a onClick={() => handleNavClick('mentorHub')}>Mentor Hub</a></li>
+          <li><a onClick={() => handleNavClick('investorHub')}>Investor Hub</a></li>
         </ul>
       </div>
+
+      {/* Main Content */}
       <div className="main-content">
-        <h1>Welcome, {user?.name}!</h1>
-        <p>College: {user?.college}</p>
-        <p>Expertise: {user?.expertise}</p>
-      </div>
+        {currentView === 'dashboard' && (
+          <section className="dashboard-view">
+            <h1>Your Dashboard</h1>
+            <div className="dashboard-sections">
+              <div className="section resources">
+                <h2>Startup Tools</h2>
+                <p>Explore the tools you need to build your startup.</p>
+              </div>
 
-      {/* Dark/Light Mode Toggle */}
-      <div className="toggle-container" onClick={toggleTheme}>
-        <span className="toggle-label">Dark Mode</span>
-        <div className="toggle-switch">
-          <div className="switch-ball"></div>
-        </div>
-      </div>
+              <div className="section statistics">
+                <h2>Statistics</h2>
+                <p>Track your progress, connection rates, and more.</p>
+              </div>
 
-      {/* Edit Profile Modal */}
-      {isEditProfileVisible && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h2>Edit Profile</h2>
-            <label>
-              Name:
+              <div className="section success-stories">
+                <h2>Success Stories</h2>
+                <p>Read about the journeys of other successful entrepreneurs.</p>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {currentView === 'connect' && (
+          <section className="connect-view">
+            <h1>Connect with Entrepreneurs</h1>
+            {/* Add your connect content here */}
+          </section>
+        )}
+
+        {currentView === 'mentorHub' && (
+          <section className="mentor-hub-view">
+            <h1>Mentor Hub</h1>
+            {/* Add mentor hub content here */}
+          </section>
+        )}
+
+        {currentView === 'investorHub' && (
+          <section className="investor-hub-view">
+            <h1>Investor Hub</h1>
+            {/* Add investor hub content here */}
+          </section>
+        )}
+
+        {isEditProfileVisible && (
+          <div className="modal-overlay" onClick={handleCloseModal}>
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <h2>Edit Profile</h2>
+              <label>Name:</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
               />
-            </label>
-            <label>
-              College:
-              <input
-                type="text"
+              <label>College:</label>
+              <select
                 name="college"
                 value={formData.college}
                 onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Expertise:
-              <input
-                type="text"
+              >
+                <option value="">Select College</option>
+                <option value="Business">Business</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Science">Science</option>
+                <option value="Law">Law</option>
+                <option value="Medicine">Medicine</option>
+                <option value="Arts & Humanities">Arts & Humanities</option>
+                <option value="Social Sciences">Social Sciences</option>
+                <option value="Education">Education</option>
+              </select>
+              <label>Expertise:</label>
+              <select
                 name="expertise"
                 value={formData.expertise}
                 onChange={handleInputChange}
-              />
-            </label>
-            <label>
-              Profile Picture:
+              >
+                <option value="">Select Expertise</option>
+                <option value="Finance">Finance</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Design">Design</option>
+                <option value="Data Science">Data Science</option>
+                <option value="Healthcare">Healthcare</option>
+                <option value="Law">Law</option>
+                <option value="Consulting">Consulting</option>
+                <option value="Sales">Sales</option>
+                <option value="Entrepreneurship">Entrepreneurship</option>
+              </select>
+              <label>Profile Picture:</label>
               <input type="file" onChange={handleFileChange} />
-            </label>
-            {uploadProgress > 0 && (
-              <progress value={uploadProgress} max="100">{uploadProgress}%</progress>
-            )}
-            <button onClick={handleCloseModal} className="close-btn">Close</button>
-            <button onClick={handleSaveProfile} className="edit-btn" disabled={isSaving}>
-              {isSaving ? 'Saving...' : 'Save Profile'}
-            </button>
+              {uploadProgress > 0 && <progress value={uploadProgress} max="100">{uploadProgress}%</progress>}
+              <button onClick={handleSaveProfile} className="save-button">
+                Save Changes
+              </button>
+              <button onClick={handleCloseModal} className="cancel-button">
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };

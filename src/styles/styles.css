@@ -1,341 +1,248 @@
-/* Basic reset */
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500&family=Sora:wght@400;700&display=swap');
+
+/* General Styles */
 body, html {
   margin: 0;
   padding: 0;
-  font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Sora', sans-serif; /* Web3-focused font */
+  background-color: #000000;
+  color: #ffffff;
   box-sizing: border-box;
 }
 
-/* Main container */
+/* Container */
 .home-container {
-text-align: center;
-color: #fff;
-background: #1a1a1a;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-transition: background-color 0.3s ease;
-}
-
-/* Prevent scrolling during overlay */
-.home-container.overlay {
-overflow: hidden;
-}
-
-/* Header styles */
-.header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-padding: 20px 50px;
-}
-
-/* Logo text */
-.logo-text {
-font-size: 1.5rem;
-font-weight: bold;
-color: #ffffff;
-text-decoration: none;
-}
-
-/* Sign up and sign in buttons */
-.sign-up-button, .sign-in-button {
-background: linear-gradient(90deg, #f857a6, #ff5858);
-color: white;
-padding: 10px 20px;
-border: none;
-border-radius: 30px;
-font-size: 1rem;
-cursor: pointer;
-transition: transform 0.2s ease;
-}
-
-.sign-up-button:hover, .sign-in-button:hover {
-transform: scale(1.05);
-}
-
-/* Hero section */
-.hero {
-padding: 100px 20px;
-max-width: 800px;
-margin: 0 auto;
-}
-
-.main-heading {
-font-size: 2.2rem;
-line-height: 1.5;
-margin-top: 20px;
-}
-
-/* Features grid */
-.features-grid {
-display: flex;
-justify-content: center;
-gap: 20px;
-margin: 40px 0;
-position: relative;
-}
-
-.feature-square {
-width: 200px;
-height: 200px;
-perspective: 1000px; /* Allow 3D perspective */
-cursor: pointer;
-}
-
-.feature-content {
-position: relative;
-width: 100%;
-height: 100%;
-transition: transform 0.6s;
-transform-style: preserve-3d; /* Enables 3D transform */
-border-radius: 10px;
-box-shadow: 0px 4px 15px rgba(0, 255, 166, 0.4);
-}
-
-.feature-square:hover .feature-content {
-transform: rotateY(180deg); /* Flip the card on hover */
-}
-
-.feature-front, .feature-back {
-position: absolute;
-width: 100%;
-height: 100%;
-backface-visibility: hidden; /* Hide the back side when not flipped */
-display: flex;
-align-items: center;
-justify-content: center;
-border-radius: 10px;
-}
-
-.feature-front {
-background: black;
-color: transparent;
-background-clip: text;
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-image: linear-gradient(45deg, #ff5858, #f6d365, #27f9a5);
-}
-
-.feature-back {
-background-color: #000;
-color: white;
-transform: rotateY(180deg); /* Flip the back side */
-padding: 20px;
-font-size: 1.1rem;
-box-shadow: 0px 4px 15px rgba(0, 255, 166, 0.4);
-}
-
-/* Footer */
-.footer {
-background-color: #1a1a1a;
-color: #cccccc;
-padding: 20px;
-text-align: center;
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-.features-grid {
+  display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-.feature-square {
-  width: 100%;
-  max-width: 300px;
-  margin-bottom: 20px;
-}
-}
-
-
-/* About Us Section Animations */
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.about-us {
-  padding: 60px 20px;
-  max-width: 900px;
-  margin: 40px auto;
-  background: #000;
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 255, 166, 0.4);
-  text-align: center;
-  animation: fadeInAboutUs 2s ease-in-out forwards;
-}
-
-.about-us h2 {
-  color: #ff5858;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-  background: linear-gradient(45deg, #f857a6, #ff5858);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.about-us p {
-  color: #ccc;
-  font-size: 1.2rem;
-  line-height: 1.7;
-  margin-bottom: 0;
-}
-
-@keyframes fadeInAboutUs {
-  from {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.careers {
-  padding: 60px 20px;
-  max-width: 900px;
-  margin: 40px auto;
-  background: #000;
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 255, 166, 0.4);
+  min-height: 100vh;
+  justify-content: space-between;
   text-align: center;
 }
 
-.careers h2 {
-  color: #ff5858;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.careers p {
-  color: #ccc;
-  font-size: 1.2rem;
-}
-
-.careers-link {
-  display: inline-block;
-  padding: 12px 25px;
-  background: linear-gradient(90deg, #f857a6, #ff5858);
-  color: #fff;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.careers-link:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 88, 88, 0.6), 0 0 25px rgba(248, 87, 166, 0.6);
-}
-
-
-/* Header styles */
+/* Header */
 .header {
+  background: linear-gradient(180deg, #000000, #1a1a1a); /* Gradient background for header */
+  padding: 20px 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 40px; /* Reduced padding for more space */
-  background-color: #000;
-  box-shadow: 0px 4px 15px rgba(0, 255, 166, 0.4);
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  box-sizing: border-box; /* Ensure padding doesn't affect width */
 }
 
-/* Navbar styles */
-.navbar {
-  display: flex;
-  flex-grow: 1;
-  justify-content: center;
+.logo-text {
+  font-family: 'Baloo 2', sans-serif; /* Playful font for logo */
+  font-size: 2rem;
+  font-weight: 500;
+  color: white;
+  text-decoration: none; /* Remove the underline */
 }
+
 
 .navbar a {
-  color: #ffffff;
-  margin: 0 15px;
+  color: white;
+  margin: 0 20px;
   text-decoration: none;
   font-weight: 500;
   font-size: 1.1rem;
-  position: relative;
   transition: color 0.3s ease;
 }
 
 .navbar a:hover {
-  color: #f6d365;
+  color: #00FFCC; /* Light neon green on hover */
 }
 
-.navbar a::before {
-  content: '';
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: -4px;
-  left: 0;
-  background: linear-gradient(45deg, #00ffa6, #6200ea);
-  transition: width 0.4s ease;
-}
-
-.navbar a:hover::before {
-  width: 100%;
-}
-
-/* Button Container */
-.buttons {
-  display: flex;
-  gap: 10px;
-  margin-left: 20px;
-  flex-shrink: 0; /* Prevent buttons from shrinking */
-}
-
-.sign-up-button,
-.sign-in-button {
-  background: linear-gradient(90deg, #f857a6, #ff5858);
+/* Hero Section */
+.hero {
+  padding: 100px 20px;
+  background: linear-gradient(180deg, #000000, #111111); /* Gradient for hero section */
   color: white;
-  padding: 10px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-family: 'Sora', sans-serif; /* Web3-focused font */
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.2rem;
+  color: #cccccc;
+  margin-bottom: 40px;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* CTA Buttons */
+.cta-button {
+  background: linear-gradient(90deg, #00FFCC, #00B3FF); /* Neon gradient */
+  color: white;
   border: none;
+  border-radius: 30px;
+  padding: 15px 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 255, 204, 0.4);
+}
+
+.cta-button-outline {
+  background: none;
+  color: #00FFCC;
+  border: 2px solid #00FFCC;
+  padding: 15px 30px;
   border-radius: 30px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.sign-up-button:hover,
-.sign-in-button:hover {
+.cta-button-outline:hover {
   transform: scale(1.05);
+  box-shadow: 0 8px 15px rgba(0, 255, 204, 0.4);
 }
 
-/* Responsive for mobile */
+/* Features Section */
+.features-section {
+  padding: 60px 20px;
+  background-color: #111111;
+  color: white;
+}
+
+.features-grid {
+  display: flex;
+  justify-content: space-around;
+  gap: 40px;
+}
+
+.feature-item {
+  width: 280px;
+  padding: 20px;
+  background-color: #1a1a1a;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover {
+  transform: translateY(-5px);
+}
+
+.feature-item h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.5rem;
+  color: #00FFCC;
+  margin-bottom: 10px;
+}
+
+.feature-item p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  color: #cccccc;
+}
+
+/* About Us Section */
+.about-section {
+  padding: 60px 20px;
+  background-color: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.about-section h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.about-section p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.1rem;
+  color: #cccccc;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Careers Section */
+.careers-section {
+  padding: 60px 20px;
+  background-color: #111111;
+}
+
+.careers-section h2 {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.5rem;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.careers-section p {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.1rem;
+  color: #cccccc;
+}
+
+.cta-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #00FFCC;
+  color: white;
+  border-radius: 30px;
+  text-decoration: none;
+  font-family: 'Sora', sans-serif;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.cta-link:hover {
+  background-color: #00B3FF;
+}
+
+/* Footer */
+.footer {
+  background-color: #000000;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer p {
+  font-family: 'Sora', sans-serif;
+  color: #888888;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  .header {
+  .features-grid {
     flex-direction: column;
-    padding: 20px;
+    align-items: center;
   }
 
-  .navbar {
-    margin-top: 10px;
-  }
-
-  .buttons {
-    flex-direction: column;
-    margin-top: 10px;
-    margin-left: 0;
-  }
-
-  .sign-up-button,
-  .sign-in-button {
-    font-size: 0.9rem;
+  .feature-item {
     width: 100%;
-    padding: 10px;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .cta-button, .cta-button-outline {
+    font-size: 0.9rem;
+    padding: 12px 20px;
   }
 }
-
-

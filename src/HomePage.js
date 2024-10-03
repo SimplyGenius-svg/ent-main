@@ -6,90 +6,67 @@ const HomePage = () => {
   return (
     <div className="home-container">
       <header className="header">
-  <a href="/" className="logo-text">Entrelink</a>
-  <nav className="navbar">
-    <a href="#about">About Us</a>
-    <a href="#careers">Careers</a>
-    <a href="#features">Features</a>
-  </nav>
-  <div className="buttons">
-    <Link to="/signup">
-      <button className="sign-up-button">SIGN UP!</button>
-    </Link>
-    <Link to="/signin">
-      <button className="sign-in-button">SIGN IN</button>
-    </Link>
-  </div>
-</header>
-
+        <a href="/" className="logo-text">Entrelink</a>
+        <nav className="navbar">
+          <a href="#about">About Us</a>
+          <a href="#careers">Careers</a>
+          <a href="#features">Features</a>
+        </nav>
+        <div className="buttons">
+          <Link to="/signup">
+            <button className="cta-button">Get Started</button>
+          </Link>
+          <Link to="/signin">
+            <button className="cta-button-outline">Log In</button>
+          </Link>
+        </div>
+      </header>
 
       <main>
         <section className="hero">
-          <h1>Say hello <span className="wave-emoji">👋</span> to</h1>
-          <h2 className="main-heading">
-            your ultimate entrepreneur engine<br />
-            to <span className="highlight make">make</span>, 
-            <span className="highlight connect"> connect</span>, and 
-            <span className="highlight create"> create</span>.
-          </h2>
-          <p>Empowering entrepreneurs to make their dreams a reality.</p>
+          <h1>Entrepreneurs, connect and grow!</h1>
+          <p>Your platform to meet investors, collaborators, and mentors in one click.</p>
+          <div className="hero-buttons">
+            <Link to="/signup">
+              <button className="cta-button">Join Now</button>
+            </Link>
+            <Link to="/learn-more">
+              <button className="cta-button-outline">Learn More</button>
+            </Link>
+          </div>
         </section>
 
-        <section id="features" className="features-grid">
-          <div className="feature-square">
-            <div className="feature-content">
-              <div className="feature-front">
-                <h3>Tinder-Style Matchmaking</h3>
-              </div>
-              <div className="feature-back">
-                <p>Swipe to connect with entrepreneurs, professionals, and investors. Our intuitive interface helps you find the right people quickly.</p>
-              </div>
+        {/* Features Section */}
+        <section id="features" className="features-section">
+          <h2>Features</h2>
+          <div className="features-grid">
+            <div className="feature-item glass-card">
+              <h3>Tinder-Style Matchmaking</h3>
+              <p>Swipe to connect with like-minded entrepreneurs.</p>
             </div>
-          </div>
-          <div className="feature-square">
-            <div className="feature-content">
-              <div className="feature-front">
-                <h3>Twitter-Style Chats</h3>
-              </div>
-              <div className="feature-back">
-                <p>Engage in conversations and attend virtual events that bring the startup community together effortlessly.</p>
-              </div>
+            <div className="feature-item glass-card">
+              <h3>Real-Time Chats</h3>
+              <p>Stay connected and collaborate in real-time.</p>
             </div>
-          </div>
-          <div className="feature-square">
-            <div className="feature-content">
-              <div className="feature-front">
-                <h3>TikTok-Style Pitches</h3>
-              </div>
-              <div className="feature-back">
-                <p>Promote your startup in 60-second video pitches to attract attention from investors and new markets.</p>
-              </div>
+            <div className="feature-item glass-card">
+              <h3>Video Pitches</h3>
+              <p>Pitch your startup and attract attention from investors.</p>
             </div>
           </div>
         </section>
 
         {/* About Us Section */}
-        <section id="about-us" className="about-us">
-  <h2>About Us</h2>
-  <p>
-    Entrelink was born with a mission to bridge the gap for entrepreneurs across the world. Our goal is to provide an innovative, fast, and seamless way to connect founders with investors, mentors, and resources.
-    <br/><br/>
-    We believe in a world where opportunities are equally distributed, no matter the location or background. At Entrelink, our platform brings together talent from diverse industries to collaborate, innovate, and disrupt the status quo.
-    <br/><br/>
-    Join us as we continue to empower college founders, and aspiring entrepreneurs by helping them connect with people who will propel their vision forward.
-  </p>
-</section>
+        <section id="about" className="about-section">
+          <h2>About Us</h2>
+          <p>We’re redefining how entrepreneurs connect. From innovative matchmaking to real-time collaboration, Entrelink provides the tools and network to make your vision a reality.</p>
+        </section>
 
-
-
-<section id="careers" className="careers">
-  <h2>Careers</h2>
-  <p>Are you passionate about entrepreneurship and innovation? Explore exciting opportunities at Entrelink.</p>
-  <a href="https://gyanb.notion.site/Entrelink-Careers-40c96e2d9b8345dda94b55c713f18344?pvs=4" className="careers-link">
-    Explore Careers
-  </a>
-</section>
-
+        {/* Careers Section */}
+        <section id="careers" className="careers-section">
+          <h2>Careers</h2>
+          <p>Passionate about tech and entrepreneurship? Join us!</p>
+          <a href="https://gyanb.notion.site/Entrelink-Careers-40c96e2d9b8345dda94b55c713f18344?pvs=4" className="cta-link">Explore Careers</a>
+        </section>
       </main>
 
       <footer className="footer">
