@@ -1,6 +1,8 @@
+// Dashboard.js
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, collection, addDoc, getDocs } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
 import './styles/Dashboard.css';
@@ -8,7 +10,7 @@ import './styles/Dashboard.css';
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
-  const [currentView, setCurrentView] = useState('dashboard');  // Track the current view
+  const [currentView, setCurrentView] = useState('dashboard');
   const [formData, setFormData] = useState({
     name: '',
     college: '',
@@ -16,6 +18,8 @@ const Dashboard = () => {
     profilePic: null,
   });
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [posts, setPosts] = useState([]);
+  const [newPost, setNewPost] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,6 +46,30 @@ const Dashboard = () => {
     fetchUserData();
   }, [navigate]);
 
+  // Handle new post submission in Mentor/Investor Hub
+  const handlePostSubmit = async () => {
+    try {
+      const postDocRef = collection(db, 'posts');
+      await addDoc(postDocRef, { text: newPost, userId: auth.currentUser.uid });
+      setNewPost('');
+      fetchPosts();  // Refresh posts after submission
+    } catch (error) {
+      console.error("Error submitting post:", error);
+    }
+  };
+
+  // Fetch posts from Firebase
+  const fetchPosts = async () => {
+    const postsCollectionRef = collection(db, 'posts');
+    const postsSnapshot = await getDocs(postsCollectionRef);
+    const postsList = postsSnapshot.docs.map((doc) => doc.data());
+    setPosts(postsList);
+  };
+
+  useEffect(() => {
+    fetchPosts();  // Load posts when the component mounts
+  }, []);
+
   // Handle profile picture click to open the edit profile modal
   const handleProfilePictureClick = () => {
     setIsEditProfileVisible(true);
@@ -60,7 +88,6 @@ const Dashboard = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle profile picture change
   const handleFileChange = (e) => {
     setFormData({ ...formData, profilePic: e.target.files[0] });
   };
@@ -127,49 +154,58 @@ const Dashboard = () => {
         {currentView === 'dashboard' && (
           <section className="dashboard-view">
             <h1>Your Dashboard</h1>
-            <div className="dashboard-sections">
-              <div className="section resources">
-                <h2>Startup Tools</h2>
-                <p>Explore the tools you need to build your startup.</p>
-              </div>
-
-              <div className="section statistics">
-                <h2>Statistics</h2>
-                <p>Track your progress, connection rates, and more.</p>
-              </div>
-
-              <div className="section success-stories">
-                <h2>Success Stories</h2>
-                <p>Read about the journeys of other successful entrepreneurs.</p>
-              </div>
-            </div>
+            {/* Add widgets and features */}
           </section>
         )}
 
         {currentView === 'connect' && (
           <section className="connect-view">
             <h1>Connect with Entrepreneurs</h1>
-            {/* Add your connect content here */}
+            {/* Implement swipe connect functionality */}
           </section>
         )}
 
         {currentView === 'mentorHub' && (
           <section className="mentor-hub-view">
             <h1>Mentor Hub</h1>
-            {/* Add mentor hub content here */}
+            <textarea
+              value={newPost}
+              onChange={(e) => setNewPost(e.target.value)}
+              placeholder="Share something with mentors..."
+            ></textarea>
+            <button onClick={handlePostSubmit}>Post</button>
+            <div className="posts">
+              {posts.map((post, index) => (
+                <div key={index} className="post">
+                  <p>{post.text}</p>
+                </div>
+              ))}
+            </div>
           </section>
         )}
 
         {currentView === 'investorHub' && (
           <section className="investor-hub-view">
             <h1>Investor Hub</h1>
-            {/* Add investor hub content here */}
+            <textarea
+              value={newPost}
+              onChange={(e) => setNewPost(e.target.value)}
+              placeholder="Share something with investors..."
+            ></textarea>
+            <button onClick={handlePostSubmit}>Post</button>
+            <div className="posts">
+              {posts.map((post, index) => (
+                <div key={index} className="post">
+                  <p>{post.text}</p>
+                </div>
+              ))}
+            </div>
           </section>
         )}
 
         {isEditProfileVisible && (
           <div className="modal-overlay" onClick={handleCloseModal}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-content non-intrusive-modal" onClick={(e) => e.stopPropagation()}>
               <h2>Edit Profile</h2>
               <label>Name:</label>
               <input
