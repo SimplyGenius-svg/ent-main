@@ -1,0 +1,127 @@
+.mentor-hub {
+    background: linear-gradient(135deg, #181b20, #0f1114);
+    color: #f4f4f9;
+    padding: 40px;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  .hub-title {
+    font-size: 3rem;
+    color: #ffdf2b;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: 0px 0px 20px rgba(255, 223, 43, 0.5);
+  }
+  
+  .resource-section h2 {
+    color: #ffae00;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .resources-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .resources-list li {
+    background: rgba(255, 223, 43, 0.1);
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+  
+  .resources-list li:hover {
+    background: rgba(255, 223, 43, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  .resources-list li a {
+    color: #ffdf2b;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .goal-tracker {
+    margin-top: 2rem;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(255, 223, 43, 0.15);
+  }
+  
+  .goals-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .goal-item {
+    padding: 12px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .goal-item.completed {
+    text-decoration: line-through;
+    color: #ffae00;
+  }
+  
+  .goal-item:hover {
+    background: rgba(255, 223, 43, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  .add-goal-button {
+    margin-top: 1rem;
+    padding: 10px 15px;
+    background: #ffae00;
+    border: none;
+    border-radius: 8px;
+    color: #181b20;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+  
+  .add-goal-button:hover {
+    background: #ffdf2b;
+  }
+  
+  .mentor-list {
+    margin-top: 3rem;
+  }
+  
+  .mentor-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .mentor-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .mentor-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 30px rgba(255, 223, 43, 0.2);
+  }
+  
+  .mentor-card h3 {
+    color: #ffae00;
+    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .mentor-card p {
+    color: #adb5bd;
+  }
+  
