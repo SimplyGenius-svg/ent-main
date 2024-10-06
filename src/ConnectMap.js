@@ -1,28 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { collection, getDocs } from 'firebase/firestore'; // Import Firestore methods
+import { db } from './firebase'; // Import your firebase configuration
 import './styles/ConnectMap.css';
 
 const ConnectMap = () => {
   const mountRef = useRef(null);
   const [users, setUsers] = useState([]);
 
-  // Manually assigned lat/lon values for each user
-  const manuallyAssignedUsers = [
-    { name: "gyan", lat: 37.7749, lon: -122.4194 }, // San Francisco, CA
-    { name: "Final Test", lat: 51.5074, lon: -0.1278 }, // London, UK
-    { name: "Gyan", lat: 40.7128, lon: -74.0060 }, // New York, NY
-    { name: "Aarushi Thaker", lat: 19.0760, lon: 72.8777 }, // Mumbai, India
-    { name: "Gyan Bhambhani", lat: 28.7041, lon: 77.1025 }, // Delhi, India
-    { name: "aaru", lat: 35.6762, lon: 139.6503 }, // Tokyo, Japan
-    { name: "Andrew Xiao", lat: -33.8688, lon: 151.2093 }, // Sydney, Australia
-    { name: "Jason Voorhees", lat: 48.8566, lon: 2.3522 }, // Paris, France
-    { name: "test", lat: -23.5505, lon: -46.6333 } // São Paulo, Brazil
-  ];
-
+  // Fetch user data from Firestore and assign random lat/lon values
   useEffect(() => {
-    // Simulate fetching users by using the manually assigned user data
-    setUsers(manuallyAssignedUsers);
+    const fetchUsers = async () => {
+      try {
+        const usersCollection = collection(db, 'users'); // Assume 'users' is your Firestore collection
+        const usersSnapshot = await getDocs(usersCollection);
+        const usersList = usersSnapshot.docs.map(doc => {
+          const userData = doc.data();
+          // Assign random lat/lon for each user
+          const randomLat = Math.random() * 180 - 90; // Random latitude between -90 and 90
+          const randomLon = Math.random() * 360 - 180; // Random longitude between -180 and 180
+          return { ...userData, lat: randomLat, lon: randomLon }; // Add random lat/lon
+        });
+        setUsers(usersList);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
   }, []);
 
   useEffect(() => {
@@ -30,34 +36,36 @@ const ConnectMap = () => {
     let width = mountRef.current.clientWidth;
     let height = mountRef.current.clientHeight;
 
-    // Initialize scene, camera, renderer
+    // Initialize scene
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f0f0f);
+    scene.background = new THREE.Color(0x000000); // Black background
+
+    // Initialize camera
     camera = new THREE.PerspectiveCamera(50, width / height, 1, 1000);
     camera.position.set(0, 0, 400);
 
+    // Initialize renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(width, height);
-    if (mountRef.current) {
-      mountRef.current.appendChild(renderer.domElement);
-    }
+    mountRef.current.appendChild(renderer.domElement);
 
-    // Controls for globe interaction
+    // Controls
     const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableZoom = true;
     controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.enableZoom = true;
 
-    // Create the globe
+    // Globe geometry
     const globeGeometry = new THREE.SphereGeometry(150, 64, 64);
     const globeMaterial = new THREE.MeshStandardMaterial({
-      color: 0x00ffdd,
+      color: 0x0080ff,
       wireframe: true,
     });
     globeMesh = new THREE.Mesh(globeGeometry, globeMaterial);
     scene.add(globeMesh);
 
-    // Add lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
     const pointLight = new THREE.PointLight(0xffffff, 1);
     pointLight.position.set(200, 200, 200);
@@ -76,22 +84,20 @@ const ConnectMap = () => {
       );
     };
 
-    // Load a circular gradient texture
+    // Load gradient texture
     const textureLoader = new THREE.TextureLoader();
-    const gradientTexture = textureLoader.load('/path-to-gradient-circle.png'); // Ensure the path is correct
+    const gradientTexture = textureLoader.load('/path-to-gradient-placeholder.png'); // Placeholder gradient image
 
-    // Add users as gradient circle sprites on the globe
-    const userSprites = [];
-    users.forEach((user) => {
-      const { lat, lon, name } = user;
+    // Add user markers to the globe with random lat/lon
+    users.forEach(user => {
+      const { lat, lon, name } = user; // lat and lon now randomly assigned
 
       const userPosition = latLonToVector3(lat, lon);
-      console.log(`Rendering user: ${name}, position:`, userPosition);
 
-      // Create a sprite with the gradient circle texture
+      // Create a sprite with the gradient texture
       const spriteMaterial = new THREE.SpriteMaterial({ map: gradientTexture });
       const sprite = new THREE.Sprite(spriteMaterial);
-      sprite.scale.set(25, 25, 1); // Adjust size of circle
+      sprite.scale.set(20, 20, 1); // Adjust size of the gradient circle
       sprite.position.copy(userPosition);
 
       // Add click event listener to show user name
@@ -101,49 +107,27 @@ const ConnectMap = () => {
       };
 
       scene.add(sprite);
-      userSprites.push(sprite); // Store sprites for interaction
     });
 
-    // Handle clicking on sprites
-    const handleUserClick = (event) => {
-      const mouse = new THREE.Vector2(
-        (event.clientX / renderer.domElement.clientWidth) * 2 - 1,
-        -(event.clientY / renderer.domElement.clientHeight) * 2 + 1
-      );
-      const raycaster = new THREE.Raycaster();
-      raycaster.setFromCamera(mouse, camera);
-      const intersects = raycaster.intersectObjects(userSprites);
-
-      if (intersects.length > 0) {
-        const clickedUser = intersects[0].object;
-        alert(`User: ${clickedUser.userData.name}`);
-      }
-    };
-
-    // Add event listener for clicks
-    renderer.domElement.addEventListener('click', handleUserClick);
-
-    // Animation loop to rotate the globe
+    // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      globeMesh.rotation.y += 0.002;
+      globeMesh.rotation.y += 0.001; // Slowly rotate the globe
       renderer.render(scene, camera);
       controls.update();
     };
     animate();
 
-    // Cleanup on unmount
+    // Clean up on unmount
     return () => {
-      if (mountRef.current && renderer) {
-        if (renderer.domElement) {
-          mountRef.current.removeChild(renderer.domElement);
-        }
-        renderer.dispose();
+      if (mountRef.current) {
+        mountRef.current.removeChild(renderer.domElement);
       }
+      renderer.dispose();
     };
   }, [users]); // Depend on users to re-render when user data is fetched
 
-  return <div className="connect-map-container" ref={mountRef}></div>;
+  return <div className="connect-map-container" ref={mountRef} style={{ width: '100%', height: '100vh' }}></div>;
 };
 
 export default ConnectMap;
