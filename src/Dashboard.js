@@ -5,7 +5,7 @@ import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebas
 import { db, auth, storage } from './firebase';
 import InvestorHub from './InvestorHub';
 import MentorHub from './MentorHub';
-import ConnectMap from './ConnectMap';  // Import the ConnectMap component
+import ConnectMap from './ConnectMap';
 import './styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -19,7 +19,28 @@ const Dashboard = () => {
     profilePic: null,
   });
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [topRecommendations, setTopRecommendations] = useState([]);
   const navigate = useNavigate();
+
+  // Predefined recommendation bank
+  const recommendationBank = [
+    "Investors interested in HealthTech startups",
+    "Mentors in Web Development",
+    "Networking events in your area",
+    "Pitch competitions for startups",
+    "Angel investors for early-stage companies",
+    "Entrepreneurial workshops near you",
+    "VCs focused on AI startups",
+    "Mentors in Digital Marketing",
+    "Opportunities for startup incubators",
+    "Networking meetups for founders",
+  ];
+
+  // Randomly select 3 recommendations from the bank
+  const getRandomRecommendations = () => {
+    const shuffled = [...recommendationBank].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, 3);
+  };
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -43,6 +64,7 @@ const Dashboard = () => {
     };
 
     fetchUserData();
+    setTopRecommendations(getRandomRecommendations());  // Set top recommendations
   }, [navigate]);
 
   const handleProfilePictureClick = () => {
@@ -125,9 +147,30 @@ const Dashboard = () => {
         {currentView === 'dashboard' && (
           <section className="dashboard-view">
             <h1>Your Dashboard</h1>
-            {/* Add the ConnectMap here */}
+
+            {/* Connect Map */}
             <div className="map-container">
               <ConnectMap />
+            </div>
+
+            {/* Recent Activity */}
+            <div className="widget">
+              <h2>My Recent Activity</h2>
+              <ul>
+                <li>Connected with John Doe in Entrepreneurship</li>
+                <li>Posted in Mentor Hub: "Looking for co-founder!"</li>
+                <li>Updated profile picture</li>
+              </ul>
+            </div>
+
+            {/* Top Recommendations */}
+            <div className="widget">
+              <h2>Top Recommendations</h2>
+              <ul>
+                {topRecommendations.map((recommendation, index) => (
+                  <li key={index}>{recommendation}</li>
+                ))}
+              </ul>
             </div>
           </section>
         )}
