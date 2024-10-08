@@ -3,8 +3,8 @@ html, body {
   margin: 0;
   padding: 0;
   font-family: 'Sora', sans-serif;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: #f5f5ff;  /* Light purple background */
+  color: #4a4a4a;  /* Dark gray text */
   height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -14,21 +14,26 @@ html, body {
 .dashboard-container {
   display: flex;
   height: 100vh;
+  animation: fadeInPage 1.2s ease-in-out;
 }
 
+/* Sidebar Styling */
 .sidebar {
-  background-color: #000000;
+  background-color: #ececff;  /* Light purple sidebar */
   padding: 20px;
-  width: 200px;
+  width: 220px;
   height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+  animation: slideInLeft 1s ease-in-out;  /* Sidebar slide-in animation */
 }
 
 .profile-container {
   text-align: center;
+  margin-bottom: 20px;  /* Space below profile picture */
+  animation: fadeInSlideUp 1s ease-in-out;
 }
 
 .profile-pic {
@@ -54,28 +59,42 @@ html, body {
 }
 
 .sidebar ul li a {
-  color: #ffffff;
+  color: #4a4a4a;  /* Dark gray text for buttons */
+  background-color: #ffffff;  /* White button background */
   text-decoration: none;
   font-size: 1.2rem;
   cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  text-align: center;
 }
 
+.sidebar ul li a:hover {
+  background-color: #6a5acd;  /* Light purple hover background */
+  color: #ffffff;  /* White text on hover */
+}
+
+/* Main Content Styling */
 .main-content {
-  margin-left: 220px;
+  margin-left: 240px;  /* Adjust to fit sidebar width */
   padding: 40px;
-  width: calc(100% - 220px);
+  width: calc(100% - 240px);
   overflow-y: auto;
-  background-color: #1a1a1a;
+  background-color: #f5f5ff;  /* Light purple background */
+  animation: fadeInSlideUp 1.5s ease-in-out;  /* Content fade and slide-in animation */
 }
 
 .dashboard-view {
   padding: 20px;
+  animation: fadeInSlideUp 1.5s ease-in-out;
 }
 
 h1 {
   font-size: 2.5rem;
-  color: #ffffff;
+  color: #4a4a4a;  /* Dark gray title */
   margin-bottom: 40px;
+  animation: fadeInTitle 1s ease-in-out;
 }
 
 .widget-container {
@@ -86,22 +105,24 @@ h1 {
 }
 
 .widget {
-  background-color: #333333;
+  background-color: #ffffff;  /* White background for widgets */
   border-radius: 15px;
   padding: 20px;
   margin-bottom: 20px;
   text-align: center;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);  /* Light shadow */
   width: 48%;
+  color: #4a4a4a;  /* Dark gray text */
   transition: transform 0.3s ease, opacity 0.3s ease;
+  animation: fadeInWidget 1.2s ease-in-out;  /* Widget fade-in */
 }
 
 .widget:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 255, 204, 0.4);
+  box-shadow: 0 10px 20px rgba(106, 90, 205, 0.2);  /* Light purple shadow on hover */
 }
 
-/* To-Do List Styles */
+/* To-Do List Styling */
 .task-input {
   width: 80%;
   padding: 10px;
@@ -109,13 +130,13 @@ h1 {
   border-radius: 5px;
   border: none;
   outline: none;
-  background-color: #2a2a2a;
-  color: #ffffff;
+  background-color: #ececff;  /* Light purple input */
+  color: #4a4a4a;
 }
 
 .add-task-button {
-  background-color: #00FFCC;
-  color: #000;
+  background-color: #6a5acd;  /* Light purple button */
+  color: #ffffff;
   border: none;
   padding: 10px;
   border-radius: 5px;
@@ -124,7 +145,7 @@ h1 {
 }
 
 .add-task-button:hover {
-  background-color: #00B3FF;
+  background-color: #483d8b;  /* Darker purple hover */
 }
 
 .tasks-list {
@@ -138,9 +159,10 @@ h1 {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #444444;
+  background-color: #f5f5ff;  /* Light purple task background */
   border-radius: 5px;
   margin-bottom: 10px;
+  color: #4a4a4a;
 }
 
 .delete-task-button {
@@ -167,7 +189,7 @@ ul.recent-activity-list, ul.recommendations-list {
 
 ul.recent-activity-list li, ul.recommendations-list li {
   padding: 10px;
-  background-color: #444444;
+  background-color: #ececff;  /* Light purple */
   border-radius: 8px;
   margin-bottom: 10px;
   opacity: 0;
@@ -176,13 +198,66 @@ ul.recent-activity-list li, ul.recommendations-list li {
 }
 
 ul.recent-activity-list li:hover, ul.recommendations-list li:hover {
-  background-color: #00FFCC;
-  color: #000000;
+  background-color: #6a5acd;  /* Light purple hover */
+  color: #ffffff;  /* White text on hover */
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
 
 /* Keyframes for animations */
+@keyframes fadeInPage {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInWidget {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @keyframes fadeInUp {
   0% {
     opacity: 0;
