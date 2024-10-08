@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
-import InvestorHub from './InvestorHub';
-import MentorHub from './MentorHub';
-import ConnectMap from './ConnectMap';
+import MentorHub from './MentorHub';  // Import MentorHub component
+import InvestorHub from './InvestorHub';  // Import InvestorHub component
 import './styles/Dashboard.css';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
+  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);  // Profile editing state
   const [currentView, setCurrentView] = useState('dashboard');
   const [formData, setFormData] = useState({
     name: '',
@@ -20,9 +19,11 @@ const Dashboard = () => {
   });
   const [uploadProgress, setUploadProgress] = useState(0);
   const [topRecommendations, setTopRecommendations] = useState([]);
+  const [tasks, setTasks] = useState([]);  // To-do list state
+  const [newTask, setNewTask] = useState('');  // New task input
   const navigate = useNavigate();
 
-  // Predefined recommendation bank
+  // Recommendation bank
   const recommendationBank = [
     "Investors interested in HealthTech startups",
     "Mentors in Web Development",
@@ -36,7 +37,7 @@ const Dashboard = () => {
     "Networking meetups for founders",
   ];
 
-  // Randomly select 3 recommendations from the bank
+  // Select random recommendations
   const getRandomRecommendations = () => {
     const shuffled = [...recommendationBank].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, 3);
@@ -64,61 +65,32 @@ const Dashboard = () => {
     };
 
     fetchUserData();
-    setTopRecommendations(getRandomRecommendations());  // Set top recommendations
+    setTopRecommendations(getRandomRecommendations());  // Set random recommendations
   }, [navigate]);
 
   const handleProfilePictureClick = () => {
-    setIsEditProfileVisible(true);
+    setIsEditProfileVisible(true);  // Open edit profile modal
   };
 
-  const handleCloseModal = () => {
-    setIsEditProfileVisible(false);
+  // To-Do List Handlers
+  const handleTaskChange = (e) => {
+    setNewTask(e.target.value);
+  };
+
+  const addTask = () => {
+    if (newTask.trim() !== '') {
+      setTasks([...tasks, newTask]);
+      setNewTask('');
+    }
+  };
+
+  const deleteTask = (index) => {
+    const updatedTasks = tasks.filter((task, i) => i !== index);
+    setTasks(updatedTasks);
   };
 
   const handleNavClick = (view) => {
-    setCurrentView(view);  // Switch between dashboard, mentor hub, investor hub, etc.
-  };
-
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setFormData({ ...formData, profilePic: e.target.files[0] });
-  };
-
-  const handleSaveProfile = async () => {
-    try {
-      const userDocRef = doc(db, 'users', auth.currentUser.uid);
-
-      if (formData.profilePic && typeof formData.profilePic !== 'string') {
-        const imageRef = storageRef(storage, `profilePictures/${auth.currentUser.uid}`);
-        const uploadTask = uploadBytesResumable(imageRef, formData.profilePic);
-
-        uploadTask.on(
-          'state_changed',
-          (snapshot) => {
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            setUploadProgress(progress);
-          },
-          (error) => {
-            console.error('Error uploading image:', error);
-          },
-          async () => {
-            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-            await updateDoc(userDocRef, { ...formData, profilePic: downloadURL });
-            setUser({ ...formData, profilePic: downloadURL });
-            setIsEditProfileVisible(false);
-          }
-        );
-      } else {
-        await updateDoc(userDocRef, formData);
-        setUser(formData);
-        setIsEditProfileVisible(false);
-      }
-    } catch (error) {
-      console.error('Error saving profile:', error);
-    }
+    setCurrentView(view);  // Switch to the respective view when clicking sidebar links
   };
 
   return (
@@ -148,92 +120,60 @@ const Dashboard = () => {
           <section className="dashboard-view">
             <h1>Your Dashboard</h1>
 
-            {/* Connect Map */}
-            <div className="map-container">
-              <ConnectMap />
+            {/* Widget container to organize widgets */}
+            <div className="widget-container">
+              {/* Recent Activity */}
+              <div className="widget">
+                <h2>My Recent Activity</h2>
+                <ul className="recent-activity-list">
+                  <li>Connected with John Doe in Entrepreneurship</li>
+                  <li>Posted in Mentor Hub: "Looking for co-founder!"</li>
+                  <li>Updated profile picture</li>
+                </ul>
+              </div>
+
+              {/* Top Recommendations */}
+              <div className="widget">
+                <h2>Top Recommendations</h2>
+                <ul className="recommendations-list">
+                  {topRecommendations.map((recommendation, index) => (
+                    <li key={index}>{recommendation}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
 
-            {/* Recent Activity */}
+            {/* To-Do List Widget */}
             <div className="widget">
-              <h2>My Recent Activity</h2>
-              <ul>
-                <li>Connected with John Doe in Entrepreneurship</li>
-                <li>Posted in Mentor Hub: "Looking for co-founder!"</li>
-                <li>Updated profile picture</li>
-              </ul>
-            </div>
-
-            {/* Top Recommendations */}
-            <div className="widget">
-              <h2>Top Recommendations</h2>
-              <ul>
-                {topRecommendations.map((recommendation, index) => (
-                  <li key={index}>{recommendation}</li>
+              <h2>To-Do List</h2>
+              <input
+                type="text"
+                value={newTask}
+                onChange={handleTaskChange}
+                placeholder="Add a new task..."
+                className="task-input"
+              />
+              <button onClick={addTask} className="add-task-button">Add Task</button>
+              <ul className="tasks-list">
+                {tasks.map((task, index) => (
+                  <li key={index} className="task-item">
+                    {task}
+                    <button onClick={() => deleteTask(index)} className="delete-task-button">Delete</button>
+                  </li>
                 ))}
               </ul>
             </div>
           </section>
         )}
 
-        {currentView === 'mentorHub' && <MentorHub />}
-        {currentView === 'investorHub' && <InvestorHub />}
+        {/* Mentor Hub view */}
+        {currentView === 'mentorHub' && (
+          <MentorHub />  // Render the Mentor Hub component
+        )}
 
-        {isEditProfileVisible && (
-          <div className="modal-overlay" onClick={handleCloseModal}>
-            <div className="modal-content non-intrusive-modal" onClick={(e) => e.stopPropagation()}>
-              <h2>Edit Profile</h2>
-              <label>Name:</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-              />
-              <label>College:</label>
-              <select
-                name="college"
-                value={formData.college}
-                onChange={handleInputChange}
-              >
-                <option value="">Select College</option>
-                <option value="Business">Business</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Science">Science</option>
-                <option value="Law">Law</option>
-                <option value="Medicine">Medicine</option>
-                <option value="Arts & Humanities">Arts & Humanities</option>
-                <option value="Social Sciences">Social Sciences</option>
-                <option value="Education">Education</option>
-              </select>
-              <label>Expertise:</label>
-              <select
-                name="expertise"
-                value={formData.expertise}
-                onChange={handleInputChange}
-              >
-                <option value="">Select Expertise</option>
-                <option value="Finance">Finance</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Design">Design</option>
-                <option value="Data Science">Data Science</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Law">Law</option>
-                <option value="Consulting">Consulting</option>
-                <option value="Sales">Sales</option>
-                <option value="Entrepreneurship">Entrepreneurship</option>
-              </select>
-              <label>Profile Picture:</label>
-              <input type="file" onChange={handleFileChange} />
-              {uploadProgress > 0 && <progress value={uploadProgress} max="100">{uploadProgress}%</progress>}
-              <button onClick={handleSaveProfile} className="save-button">
-                Save Changes
-              </button>
-              <button onClick={handleCloseModal} className="cancel-button">
-                Cancel
-              </button>
-            </div>
-          </div>
+        {/* Investor Hub view */}
+        {currentView === 'investorHub' && (
+          <InvestorHub />  // Render the Investor Hub component
         )}
       </div>
     </div>
