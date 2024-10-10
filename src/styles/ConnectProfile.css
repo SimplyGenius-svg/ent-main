@@ -1,0 +1,124 @@
+/* General Styling for Connect Profile */
+.connect-profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f3f4f6, #ffffff);
+    padding: 20px;
+}
+  
+.connect-profile-form {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+  
+.connect-profile-form h2 {
+    font-size: 28px;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #5a67d8, #63b3ed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+  
+.connect-profile-form label {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+  
+.connect-profile-form input[type="text"],
+.connect-profile-form input[type="file"],
+.connect-profile-form textarea {
+    padding: 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+  
+.connect-profile-form input[type="text"]:focus,
+.connect-profile-form input[type="file"]:focus,
+.connect-profile-form textarea:focus {
+    outline: none;
+    border-color: #5a67d8;
+    box-shadow: 0 0 10px rgba(90, 103, 216, 0.3);
+}
+  
+.connect-profile-form textarea {
+    resize: none;
+}
+  
+.connect-profile-form .save-button {
+    background: linear-gradient(90deg, #5a67d8, #63b3ed);
+    color: #ffffff;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+    font-size: 18px;
+    font-weight: bold;
+}
+  
+.connect-profile-form .save-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(90, 103, 216, 0.3);
+}
+  
+.connect-profile-form input[type="file"] {
+    padding: 10px;
+}
+  
+.connect-profile-form .icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    color: #4a5568;
+}
+
+/* Adjustments for video and image previews */
+.preview-video {
+    width: 200px;  /* Make the video smaller */
+    height: auto;  /* Maintain aspect ratio */
+    border-radius: 10px;  /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+    margin: 10px 0;  /* Spacing around the video */
+}
+
+.preview-image {
+    width: 100px;  /* Make profile images smaller */
+    height: 100px;  /* Keep a square ratio */
+    object-fit: cover;  /* Ensure the image covers the container */
+    border-radius: 50%;  /* Make it circular */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+    margin: 10px 10px;  /* Add spacing between images */
+}
+
+.preview-image-small {
+    width: 80px;  /* Smaller size for additional images */
+    height: 80px;  /* Keep square ratio */
+    object-fit: cover;  /* Ensure image fits well */
+    border-radius: 10px;  /* Rounded corners */
+    margin: 5px;  /* Add space between images */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Light shadow */
+}
+
+/* Flexbox container for multiple images */
+.preview-pictures {
+    display: flex;
+    flex-wrap: wrap;  /* Allow wrapping if too many images */
+    justify-content: center;  /* Center images */
+    margin-top: 10px;
+}

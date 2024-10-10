@@ -3,45 +3,28 @@ import { useNavigate } from 'react-router-dom';
 import { getDoc, doc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
-import MentorHub from './MentorHub';  // Import MentorHub component
-import InvestorHub from './InvestorHub';  // Import InvestorHub component
 import './styles/Dashboard.css';
+import MentorHub from './MentorHub';
+import InvestorHub from './InvestorHub';
+import ConnectProfile from './ConnectProfile';
+import ConnectSwipe from './ConnectSwipe';
+import { FaHome, FaUserEdit, FaChalkboardTeacher, FaHandHoldingUsd, FaHandshake } from 'react-icons/fa';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);  // Profile editing state
-  const [currentView, setCurrentView] = useState('dashboard');
+  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     college: '',
     expertise: '',
     profilePic: null,
+    linkedIn: '',
+    instagram: ''
   });
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [topRecommendations, setTopRecommendations] = useState([]);
-  const [tasks, setTasks] = useState([]);  // To-do list state
-  const [newTask, setNewTask] = useState('');  // New task input
+  const [profilePicFile, setProfilePicFile] = useState(null);
+  const [currentView, setCurrentView] = useState('home');
   const navigate = useNavigate();
-
-  // Recommendation bank
-  const recommendationBank = [
-    "Investors interested in HealthTech startups",
-    "Mentors in Web Development",
-    "Networking events in your area",
-    "Pitch competitions for startups",
-    "Angel investors for early-stage companies",
-    "Entrepreneurial workshops near you",
-    "VCs focused on AI startups",
-    "Mentors in Digital Marketing",
-    "Opportunities for startup incubators",
-    "Networking meetups for founders",
-  ];
-
-  // Select random recommendations
-  const getRandomRecommendations = () => {
-    const shuffled = [...recommendationBank].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3);
-  };
 
   useEffect(() => {
     if (!auth.currentUser) {
@@ -65,37 +48,49 @@ const Dashboard = () => {
     };
 
     fetchUserData();
-    setTopRecommendations(getRandomRecommendations());  // Set random recommendations
   }, [navigate]);
 
   const handleProfilePictureClick = () => {
-    setIsEditProfileVisible(true);  // Open edit profile modal
+    setIsEditProfileVisible(true);
   };
 
-  // To-Do List Handlers
-  const handleTaskChange = (e) => {
-    setNewTask(e.target.value);
+  const handleProfilePicChange = (e) => {
+    setProfilePicFile(e.target.files[0]);
   };
 
-  const addTask = () => {
-    if (newTask.trim() !== '') {
-      setTasks([...tasks, newTask]);
-      setNewTask('');
+  const handleSaveChanges = async () => {
+    try {
+      if (profilePicFile) {
+        const storageRefInstance = storageRef(storage, `profilePictures/${auth.currentUser.uid}`);
+        const uploadTask = uploadBytesResumable(storageRefInstance, profilePicFile);
+
+        uploadTask.on('state_changed', (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setUploadProgress(progress);
+        }, (error) => {
+          console.error('Profile picture upload error:', error);
+        }, async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          setFormData((prevData) => ({ ...prevData, profilePic: downloadURL }));
+        });
+      }
+
+      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      await updateDoc(userDocRef, formData);
+      setUser(formData);
+      setIsEditProfileVisible(false);
+    } catch (error) {
+      console.error('Error saving profile:', error);
     }
   };
 
-  const deleteTask = (index) => {
-    const updatedTasks = tasks.filter((task, i) => i !== index);
-    setTasks(updatedTasks);
-  };
-
-  const handleNavClick = (view) => {
-    setCurrentView(view);  // Switch to the respective view when clicking sidebar links
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
     <div className="dashboard-container">
-      {/* Sidebar */}
+      {/* Sidebar Navigation */}
       <div className="sidebar">
         <div className="profile-container">
           <img
@@ -104,77 +99,71 @@ const Dashboard = () => {
             className="profile-pic"
             onClick={handleProfilePictureClick}
           />
-          <h3>{user?.name}</h3>
-          <p>{user?.college} | Expertise: {user?.expertise}</p>
         </div>
-        <ul>
-          <li><a onClick={() => handleNavClick('dashboard')}>Dashboard</a></li>
-          <li><a onClick={() => handleNavClick('mentorHub')}>Mentor Hub</a></li>
-          <li><a onClick={() => handleNavClick('investorHub')}>Investor Hub</a></li>
+        <ul className="nav-links">
+          <li onClick={() => setCurrentView('home')}><FaHome /> Home</li>
+          <li onClick={() => setCurrentView('mentorHub')}><FaChalkboardTeacher /> Mentor Hub</li>
+          <li onClick={() => setCurrentView('investorHub')}><FaHandHoldingUsd /> Investor Hub</li>
+          <li onClick={() => setCurrentView('connect')}><FaHandshake /> Connect</li>
         </ul>
       </div>
 
       {/* Main Content */}
       <div className="main-content">
-        {currentView === 'dashboard' && (
-          <section className="dashboard-view">
-            <h1>Your Dashboard</h1>
-
-            {/* Widget container to organize widgets */}
-            <div className="widget-container">
-              {/* Recent Activity */}
-              <div className="widget">
-                <h2>My Recent Activity</h2>
-                <ul className="recent-activity-list">
-                  <li>Connected with John Doe in Entrepreneurship</li>
-                  <li>Posted in Mentor Hub: "Looking for co-founder!"</li>
-                  <li>Updated profile picture</li>
-                </ul>
-              </div>
-
-              {/* Top Recommendations */}
-              <div className="widget">
-                <h2>Top Recommendations</h2>
-                <ul className="recommendations-list">
-                  {topRecommendations.map((recommendation, index) => (
-                    <li key={index}>{recommendation}</li>
-                  ))}
-                </ul>
-              </div>
+        {isEditProfileVisible && (
+          <div className="edit-profile-modal">
+            <div className="modal-header">
+              <h2>Edit Profile</h2>
+              <button className="close-button" onClick={() => setIsEditProfileVisible(false)}>&times;</button>
             </div>
+            <div className="edit-profile-container">
+              <label>Name</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} />
+              <label>College</label>
+              <select name="college" value={formData.college} onChange={handleChange}>
+                <option value="">Select College</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Business">Business</option>
+              </select>
+              <label>Expertise</label>
+              <select name="expertise" value={formData.expertise} onChange={handleChange}>
+                <option value="">Select Expertise</option>
+                <option value="Entrepreneurship">Entrepreneurship</option>
+                <option value="Web Development">Web Development</option>
+              </select>
+              <label>LinkedIn URL</label>
+              <input type="text" name="linkedIn" value={formData.linkedIn} onChange={handleChange} />
+              <label>Instagram Handle</label>
+              <input type="text" name="instagram" value={formData.instagram} onChange={handleChange} />
+              <label>Profile Picture</label>
+              <input type="file" onChange={handleProfilePicChange} />
+              <button className="save-button" onClick={handleSaveChanges}>Save Changes</button>
+            </div>
+          </div>
+        )}
 
-            {/* To-Do List Widget */}
-            <div className="widget">
-              <h2>To-Do List</h2>
-              <input
-                type="text"
-                value={newTask}
-                onChange={handleTaskChange}
-                placeholder="Add a new task..."
-                className="task-input"
-              />
-              <button onClick={addTask} className="add-task-button">Add Task</button>
-              <ul className="tasks-list">
-                {tasks.map((task, index) => (
-                  <li key={index} className="task-item">
-                    {task}
-                    <button onClick={() => deleteTask(index)} className="delete-task-button">Delete</button>
-                  </li>
-                ))}
-              </ul>
+        {currentView === 'home' && (
+          <section className="dashboard-view">
+            <h1>Welcome back, {user?.name}!</h1>
+            <p>Your random advice of the day: "Embrace the challenges!"</p>
+            <div className="widget-container">
+              <div className="widget">
+                <h2>Recent Activity</h2>
+                <p>Connected with a new investor</p>
+                <p>Joined a mentorship program</p>
+              </div>
+              <div className="widget">
+                <h2>Recommendations</h2>
+                <p>Join the upcoming founder's event</p>
+                <p>Apply for the seed funding opportunity</p>
+              </div>
             </div>
           </section>
         )}
 
-        {/* Mentor Hub view */}
-        {currentView === 'mentorHub' && (
-          <MentorHub />  // Render the Mentor Hub component
-        )}
-
-        {/* Investor Hub view */}
-        {currentView === 'investorHub' && (
-          <InvestorHub />  // Render the Investor Hub component
-        )}
+        {currentView === 'mentorHub' && <MentorHub />}
+        {currentView === 'investorHub' && <InvestorHub />}
+        {currentView === 'connect' && <ConnectProfile />}
       </div>
     </div>
   );

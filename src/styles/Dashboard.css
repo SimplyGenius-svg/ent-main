@@ -2,301 +2,284 @@
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Sora', sans-serif;
-  background-color: #f5f5ff;  /* Light purple background */
-  color: #4a4a4a;  /* Dark gray text */
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f3f0ff, #d9f0ff);
   height: 100%;
-  overflow-x: hidden;
-  overflow-y: auto;
-  box-sizing: border-box;
+  overflow: hidden;
+  color: #2c3e50;
 }
 
 .dashboard-container {
   display: flex;
   height: 100vh;
-  animation: fadeInPage 1.2s ease-in-out;
+  background: linear-gradient(to right, #e7f3ff, #ffffff);
 }
 
 /* Sidebar Styling */
 .sidebar {
-  background-color: #ececff;  /* Light purple sidebar */
-  padding: 20px;
-  width: 220px;
-  height: 100vh;
+  width: 100px;
+  background: linear-gradient(135deg, #ffffff, #e3f0f9);
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
-  animation: slideInLeft 1s ease-in-out;  /* Sidebar slide-in animation */
+  padding: 20px 0;
+  border-right: 1px solid #cccccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: width 0.3s;
+}
+
+.sidebar:hover {
+  width: 200px;
 }
 
 .profile-container {
-  text-align: center;
-  margin-bottom: 20px;  /* Space below profile picture */
-  animation: fadeInSlideUp 1s ease-in-out;
+  margin-bottom: 30px;
 }
 
 .profile-pic {
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  width: 60px;
+  height: 60px;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  border: 4px solid #5a67d8;
+  transition: transform 0.3s;
 }
 
 .profile-pic:hover {
   transform: scale(1.1);
+  box-shadow: 0 0 15px #5a67d8;
 }
 
-.sidebar ul {
+.nav-links {
   list-style: none;
   padding: 0;
-  margin-top: 20px;
+  width: 100%;
 }
 
-.sidebar ul li {
-  margin-bottom: 15px;
-}
-
-.sidebar ul li a {
-  color: #4a4a4a;  /* Dark gray text for buttons */
-  background-color: #ffffff;  /* White button background */
-  text-decoration: none;
-  font-size: 1.2rem;
+.nav-links li {
+  margin: 20px 0;
+  font-size: 18px;
   cursor: pointer;
-  padding: 10px 20px;
-  border-radius: 10px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  text-align: center;
+  color: #4a4a4a;
+  text-align: left;
+  padding: 10px;
+  border-radius: 12px;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  align-items: center;
 }
 
-.sidebar ul li a:hover {
-  background-color: #6a5acd;  /* Light purple hover background */
-  color: #ffffff;  /* White text on hover */
+.nav-links li i {
+  font-size: 22px;
+  margin-right: 15px;
 }
 
-/* Main Content Styling */
+.nav-links li:hover {
+  background-color: #5a67d8;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(90, 103, 216, 0.3);
+}
+
+/* Main Content */
 .main-content {
-  margin-left: 240px;  /* Adjust to fit sidebar width */
+  flex-grow: 1;
   padding: 40px;
-  width: calc(100% - 240px);
+  background: linear-gradient(to bottom, #ffffff, #e6f0ff);
   overflow-y: auto;
-  background-color: #f5f5ff;  /* Light purple background */
-  animation: fadeInSlideUp 1.5s ease-in-out;  /* Content fade and slide-in animation */
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .dashboard-view {
-  padding: 20px;
-  animation: fadeInSlideUp 1.5s ease-in-out;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+  font-weight: bold;
+  font-size: 26px;
+  color: #5a67d8;
 }
 
-h1 {
-  font-size: 2.5rem;
-  color: #4a4a4a;  /* Dark gray title */
-  margin-bottom: 40px;
-  animation: fadeInTitle 1s ease-in-out;
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .widget-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
 }
 
 .widget {
-  background-color: #ffffff;  /* White background for widgets */
-  border-radius: 15px;
-  padding: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);  /* Light shadow */
-  width: 48%;
-  color: #4a4a4a;  /* Dark gray text */
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  animation: fadeInWidget 1.2s ease-in-out;  /* Widget fade-in */
+  background: linear-gradient(135deg, #ffffff, #f1faff);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s, box-shadow 0.4s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
 }
 
 .widget:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(106, 90, 205, 0.2);  /* Light purple shadow on hover */
+  transform: translateY(-10px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* To-Do List Styling */
-.task-input {
-  width: 80%;
-  padding: 10px;
+.widget h2 {
+  font-size: 22px;
   margin-bottom: 10px;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-  background-color: #ececff;  /* Light purple input */
+  background: linear-gradient(90deg, #5a67d8, #63b3ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.widget p {
+  font-size: 15px;
   color: #4a4a4a;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-.add-task-button {
-  background-color: #6a5acd;  /* Light purple button */
-  color: #ffffff;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Icon for Widgets */
+.widget-icon {
+  font-size: 45px;
+  margin-bottom: 10px;
+  color: #5a67d8;
+  animation: spin 3s linear infinite;
 }
 
-.add-task-button:hover {
-  background-color: #483d8b;  /* Darker purple hover */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
-.tasks-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-.task-item {
+/* Redesigned Edit Profile Modal Styling */
+.edit-profile-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #ffffff, #e6f0ff);
+  padding: 50px;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-width: 700px;
+  width: 90%;
+  animation: fadeInUp 0.6s ease-in-out;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background-color: #f5f5ff;  /* Light purple task background */
-  border-radius: 5px;
-  margin-bottom: 10px;
-  color: #4a4a4a;
-}
-
-.delete-task-button {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.delete-task-button:hover {
-  background-color: #ff3333;
-}
-
-/* Dynamic Animations for Recent Activity and Recommendations */
-ul.recent-activity-list, ul.recommendations-list {
-  list-style: none;
-  padding-left: 0;
-  margin-top: 20px;
-  animation: fadeInUp 0.5s ease-in-out;
-}
-
-ul.recent-activity-list li, ul.recommendations-list li {
-  padding: 10px;
-  background-color: #ececff;  /* Light purple */
-  border-radius: 8px;
-  margin-bottom: 10px;
-  opacity: 0;
-  transform: translateY(20px);
-  animation: slideUp 0.3s ease forwards;
-}
-
-ul.recent-activity-list li:hover, ul.recommendations-list li:hover {
-  background-color: #6a5acd;  /* Light purple hover */
-  color: #ffffff;  /* White text on hover */
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-}
-
-/* Keyframes for animations */
-@keyframes fadeInPage {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fadeInTitle {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slideInLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-100px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInSlideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInWidget {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  flex-direction: column;
+  gap: 25px;
 }
 
 @keyframes fadeInUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  0% { opacity: 0; transform: translateY(50px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.edit-profile-modal .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #2c3e50;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .widget-container {
-    flex-direction: column;
-  }
+.edit-profile-modal .modal-header h2 {
+  font-size: 26px;
+  background: linear-gradient(90deg, #5a67d8, #63b3ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  .widget {
-    width: 100%;
-  }
+.edit-profile-modal .close-button {
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #f87171;
+  cursor: pointer;
+  transition: color 0.3s;
+}
 
-  .main-content {
-    margin-left: 0;
-  }
+.edit-profile-modal .close-button:hover {
+  color: #e11d48;
+}
 
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
+.edit-profile-modal .edit-profile-container {
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(90, 103, 216, 0.15);
+  color: #2c3e50;
+}
+
+.edit-profile-modal .edit-profile-container label {
+  font-size: 15px;
+  margin-bottom: 8px;
+  color: #4a4a4a;
+}
+
+.edit-profile-modal .edit-profile-container input,
+.edit-profile-modal .edit-profile-container select,
+.edit-profile-modal .edit-profile-container textarea {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  background-color: #f9faff;
+  border: 1px solid #b0c4de;
+  border-radius: 10px;
+  color: #2c3e50;
+  transition: border-color 0.3s;
+}
+
+.edit-profile-modal .edit-profile-container input:focus,
+.edit-profile-modal .edit-profile-container select:focus,
+.edit-profile-modal .edit-profile-container textarea:focus {
+  outline: none;
+  border-color: #5a67d8;
+  box-shadow: 0 0 8px rgba(90, 103, 216, 0.5);
+}
+
+.edit-profile-modal .save-button {
+  width: 100%;
+  padding: 15px;
+  font-size: 18px;
+  background: linear-gradient(90deg, #5a67d8, #63b3ed);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  font-weight: bold;
+}
+
+.edit-profile-modal .save-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(90, 103, 216, 0.4);
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background: linear-gradient(135deg, #63b3ed, #f87171);
+  color: #ffffff;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(99, 179, 237, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.fab:hover {
+  transform: scale(1.15);
+  box-shadow: 0 12px 30px rgba(99, 179, 237, 0.4);
 }

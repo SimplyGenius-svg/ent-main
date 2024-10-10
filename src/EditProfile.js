@@ -1,49 +1,49 @@
-import React, { useState } from 'react';
-import './EditProfile.css'; // Create a new CSS file for the modal
+import React, { useState } from "react";
+import { auth, db } from "./firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import './styles/Dashboard.css'; // Assuming the new dashboard CSS
 
-const EditProfile = ({ userData, closeProfileModal }) => {
-  const [name, setName] = useState(userData?.name || '');
-  const [college, setCollege] = useState(userData?.college || '');
-  const [role, setRole] = useState(userData?.role || '');
+const EditProfile = ({ user }) => {
+  const [displayName, setDisplayName] = useState(user.displayName || "");
+  const [linkedin, setLinkedin] = useState(user.linkedin || "");
+  const [instagram, setInstagram] = useState(user.instagram || "");
 
-  const handleSave = () => {
-    // Save logic for profile
-    console.log('Profile saved');
-    closeProfileModal();
+  const handleUpdateProfile = async () => {
+    try {
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      await updateDoc(userRef, {
+        displayName,
+        linkedin,
+        instagram,
+      });
+      alert("Profile updated successfully");
+    } catch (err) {
+      console.error("Error updating profile:", err);
+    }
   };
 
   return (
     <div className="edit-profile-container">
-      <h2>Edit Your Profile</h2>
-      <form>
-        <div className="form-group">
-          <label>Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>College:</label>
-          <input
-            type="text"
-            value={college}
-            onChange={(e) => setCollege(e.target.value)}
-          />
-        </div>
-        <div className="form-group">
-          <label>Role:</label>
-          <input
-            type="text"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          />
-        </div>
-        <button type="button" className="save-button" onClick={handleSave}>
-          Save
-        </button>
-      </form>
+      <h2>Edit Profile</h2>
+      <label>Display Name</label>
+      <input
+        type="text"
+        value={displayName}
+        onChange={(e) => setDisplayName(e.target.value)}
+      />
+      <label>LinkedIn URL</label>
+      <input
+        type="text"
+        value={linkedin}
+        onChange={(e) => setLinkedin(e.target.value)}
+      />
+      <label>Instagram Handle</label>
+      <input
+        type="text"
+        value={instagram}
+        onChange={(e) => setInstagram(e.target.value)}
+      />
+      <button onClick={handleUpdateProfile}>Save Changes</button>
     </div>
   );
 };

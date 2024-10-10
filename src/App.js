@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './HomePage';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import SignIn from './SignIn.js';
+import SignUp from './SignUp.js';
 import CreateProfile from './CreateProfile';
 import Dashboard from './Dashboard';
 import BuildProfile from './BuildProfile'; // Profile building component
 import Matches from './Matches'; // Matches component
+import ConnectSwipe from './ConnectSwipe'; // Importing ConnectSwipe component
 import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -37,6 +38,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Matches />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/connectswipe" // Adding the /connectswipe route
+          element={
+            <ProtectedRoute>
+              <ConnectSwipe />  {/* Adding the ConnectSwipe component here */}
             </ProtectedRoute>
           }
         />
