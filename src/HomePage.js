@@ -22,12 +22,12 @@ const HomePage = () => {
         <p className="subtext">Connecting entrepreneurs, investors, and collaborators for a better tomorrow.</p>
         <div className="hero-cta">
           <a href="/signup" className="btn primary">Join Us</a>
-          <a href="/learn-more" className="btn secondary">Learn More</a>
+          <a href="#our-team" className="btn secondary">Learn More</a> {/* Updated Learn More button to scroll to "Our Team" */}
         </div>
       </section>
 
       <section id="features" className="features-section">
-        <h2 className="section-title">Our Features</h2>
+        <h2 className="section-title"><span className="icon">⚙️</span> Our Features</h2>
         <div className="features-grid">
           <div className="feature-card">
             <h3>Networking Simplified</h3>
@@ -45,14 +45,34 @@ const HomePage = () => {
       </section>
 
       <section id="about" className="about-section">
-        <h2 className="section-title">About Us</h2>
+        <h2 className="section-title"><span className="icon">ℹ️</span> About Us</h2>
         <p className="about-text">EntreLink is redefining entrepreneurship by making it easier to connect, collaborate, and succeed. From investor matchmaking to real-time collaboration tools, we are empowering tomorrow’s leaders.</p>
       </section>
 
       <section id="careers" className="careers-section">
-        <h2 className="section-title">Join Our Team</h2>
+        <h2 className="section-title"><span className="icon">💼</span> Join Our Team</h2>
         <p className="careers-text">Passionate about entrepreneurship and tech? We’re looking for forward-thinking individuals to help shape the future.</p>
         <a href="https://gyanb.notion.site/Entrelink-Careers-40c96e2d9b8345dda94b55c713f18344?pvs=4" className="btn primary">Explore Careers</a>
+      </section>
+
+      {/* New Our Team Section */}
+      <section id="our-team" className="our-team-section">
+        <h2 className="section-title"><span className="icon">👥</span> Our Team</h2>
+        <p className="team-text">Meet the innovators behind EntreLink. Our diverse team is passionate about bringing entrepreneurs, mentors, and investors together to create powerful networks that drive growth.</p>
+        <div className="team-grid">
+          <div className="team-member">
+            <h3>Gyan Bhambhani</h3>
+            <p>CEO & CoFounder</p>
+          </div>
+          <div className="team-member">
+            <h3>Andrew Xiao</h3>
+            <p>Chief Technology Officer</p>
+          </div>
+          <div className="team-member">
+            <h3>Aarushi Thaker</h3>
+            <p>Chief Marketing Officer</p>
+          </div>
+        </div>
       </section>
 
       <footer className="footer">
