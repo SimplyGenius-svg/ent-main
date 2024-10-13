@@ -1,0 +1,43 @@
+.profile-search-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 40px;
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  h1 {
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    color: #666;
+  }
+  
+  select, input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+  
+  .search-button {
+    padding: 12px 20px;
+    background: #6C63FF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .search-button:hover {
+    background: #554CCF;
+  }
+  

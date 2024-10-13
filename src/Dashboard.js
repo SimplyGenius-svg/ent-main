@@ -8,21 +8,14 @@ import MentorHub from './MentorHub';
 import InvestorHub from './InvestorHub';
 import ConnectProfile from './ConnectProfile';
 import ConnectSwipe from './ConnectSwipe';
-import { FaHome, FaUserEdit, FaChalkboardTeacher, FaHandHoldingUsd, FaHandshake } from 'react-icons/fa';
+import InstantMessaging from './InstantMessaging';
+import ArticlesAndBlogs from './ArticlesAndBlogs';
+import ProfileSearch from './ProfileSearch'; // Import ProfileSearch component
+import { FaHome, Faedit, FaChalkboardTeacher, FaHandHoldingUsd, FaHandshake, FaComments, FaBook, FaSearch } from 'react-icons/fa'; // Remove FaEdit if not used
+import RefinedProfile from './RefinedProfile';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
-  const [isEditProfileVisible, setIsEditProfileVisible] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    college: '',
-    expertise: '',
-    profilePic: null,
-    linkedIn: '',
-    instagram: ''
-  });
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [profilePicFile, setProfilePicFile] = useState(null);
   const [currentView, setCurrentView] = useState('home');
   const navigate = useNavigate();
 
@@ -40,7 +33,6 @@ const Dashboard = () => {
           const userData = userSnapshot.data();
           const profilePicUrl = await getDownloadURL(storageRef(storage, `profilePictures/${auth.currentUser.uid}`));
           setUser({ ...userData, profilePic: profilePicUrl });
-          setFormData({ ...userData, profilePic: profilePicUrl });
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -49,44 +41,6 @@ const Dashboard = () => {
 
     fetchUserData();
   }, [navigate]);
-
-  const handleProfilePictureClick = () => {
-    setIsEditProfileVisible(true);
-  };
-
-  const handleProfilePicChange = (e) => {
-    setProfilePicFile(e.target.files[0]);
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      if (profilePicFile) {
-        const storageRefInstance = storageRef(storage, `profilePictures/${auth.currentUser.uid}`);
-        const uploadTask = uploadBytesResumable(storageRefInstance, profilePicFile);
-
-        uploadTask.on('state_changed', (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setUploadProgress(progress);
-        }, (error) => {
-          console.error('Profile picture upload error:', error);
-        }, async () => {
-          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-          setFormData((prevData) => ({ ...prevData, profilePic: downloadURL }));
-        });
-      }
-
-      const userDocRef = doc(db, 'users', auth.currentUser.uid);
-      await updateDoc(userDocRef, formData);
-      setUser(formData);
-      setIsEditProfileVisible(false);
-    } catch (error) {
-      console.error('Error saving profile:', error);
-    }
-  };
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   return (
     <div className="dashboard-container">
@@ -97,51 +51,24 @@ const Dashboard = () => {
             src={user?.profilePic || 'default-profile.png'}
             alt="Profile"
             className="profile-pic"
-            onClick={handleProfilePictureClick}
+            onClick={() => window.open('https://linkedin.com')} // Option for LinkedIn
           />
+          <button onClick={() => window.open('https://instagram.com')}>Connect Instagram</button>
         </div>
         <ul className="nav-links">
           <li onClick={() => setCurrentView('home')}><FaHome /> Home</li>
           <li onClick={() => setCurrentView('mentorHub')}><FaChalkboardTeacher /> Mentor Hub</li>
           <li onClick={() => setCurrentView('investorHub')}><FaHandHoldingUsd /> Investor Hub</li>
           <li onClick={() => setCurrentView('connect')}><FaHandshake /> Connect</li>
+          <li onClick={() => setCurrentView('instantMessaging')}><FaComments /> Instant Messaging</li>
+          <li onClick={() => setCurrentView('articlesAndBlogs')}><FaBook /> Articles & Blogs</li>
+          <li onClick={() => setCurrentView('refineProfile')}><FaSearch /> Refine Profile</li>
+          <li onClick={() => setCurrentView('profileSearch')}><FaSearch /> Profile Search</li>
         </ul>
       </div>
 
       {/* Main Content */}
       <div className="main-content">
-        {isEditProfileVisible && (
-          <div className="edit-profile-modal">
-            <div className="modal-header">
-              <h2>Edit Profile</h2>
-              <button className="close-button" onClick={() => setIsEditProfileVisible(false)}>&times;</button>
-            </div>
-            <div className="edit-profile-container">
-              <label>Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} />
-              <label>College</label>
-              <select name="college" value={formData.college} onChange={handleChange}>
-                <option value="">Select College</option>
-                <option value="Engineering">Engineering</option>
-                <option value="Business">Business</option>
-              </select>
-              <label>Expertise</label>
-              <select name="expertise" value={formData.expertise} onChange={handleChange}>
-                <option value="">Select Expertise</option>
-                <option value="Entrepreneurship">Entrepreneurship</option>
-                <option value="Web Development">Web Development</option>
-              </select>
-              <label>LinkedIn URL</label>
-              <input type="text" name="linkedIn" value={formData.linkedIn} onChange={handleChange} />
-              <label>Instagram Handle</label>
-              <input type="text" name="instagram" value={formData.instagram} onChange={handleChange} />
-              <label>Profile Picture</label>
-              <input type="file" onChange={handleProfilePicChange} />
-              <button className="save-button" onClick={handleSaveChanges}>Save Changes</button>
-            </div>
-          </div>
-        )}
-
         {currentView === 'home' && (
           <section className="dashboard-view">
             <h1>Welcome back, {user?.name}!</h1>
@@ -164,6 +91,10 @@ const Dashboard = () => {
         {currentView === 'mentorHub' && <MentorHub />}
         {currentView === 'investorHub' && <InvestorHub />}
         {currentView === 'connect' && <ConnectProfile />}
+        {currentView === 'instantMessaging' && <InstantMessaging />}
+        {currentView === 'articlesAndBlogs' && <ArticlesAndBlogs />}
+        {currentView === 'refineProfile' && <RefinedProfile />}
+        {currentView === 'profileSearch' && <ProfileSearch />}
       </div>
     </div>
   );

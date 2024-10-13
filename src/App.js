@@ -8,6 +8,7 @@ import Dashboard from './Dashboard';
 import BuildProfile from './BuildProfile'; // Profile building component
 import Matches from './Matches'; // Matches component
 import ConnectSwipe from './ConnectSwipe'; // Importing ConnectSwipe component
+import RefinedProfile from './RefinedProfile'; // Importing RefinedProfile component
 import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -46,6 +47,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ConnectSwipe />  {/* Adding the ConnectSwipe component here */}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/refined-profile" // Adding the /refined-profile route
+          element={
+            <ProtectedRoute>
+              <RefinedProfile />  {/* Adding the RefinedProfile component here */}
             </ProtectedRoute>
           }
         />
