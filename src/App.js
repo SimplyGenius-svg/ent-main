@@ -4,11 +4,11 @@ import HomePage from './HomePage';
 import SignIn from './SignIn.js';
 import SignUp from './SignUp.js';
 import CreateProfile from './CreateProfile';
-import Dashboard from './Dashboard';
+import Dashboard from './Dashboard.js';
 import BuildProfile from './BuildProfile'; // Profile building component
 import Matches from './Matches'; // Matches component
 import ConnectSwipe from './ConnectSwipe'; // Importing ConnectSwipe component
-import RefinedProfile from './RefinedProfile'; // Importing RefinedProfile component
+import RefinedProfile from './RefinedProfile.js'; // Importing RefinedProfile component
 import ProtectedRoute from './ProtectedRoute';
 
 function App() {

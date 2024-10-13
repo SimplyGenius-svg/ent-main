@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import './SwipeGuide.css'; // Add custom styles
+import './styles/wipeGuide.css'; // Add custom styles
 
 const exampleProfiles = [
   { name: 'John Doe', industry: 'Tech', expertise: ['Web Development'], goals: 'Build an MVP' },

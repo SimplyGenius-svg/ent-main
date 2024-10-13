@@ -1,5 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { db, auth } from './firebase';
+import { db, auth } from '../firebase';
 
 export const checkProfileCompletion = async () => {
   const userDocRef = doc(db, 'users', auth.currentUser.uid);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable'; // Assuming this is the library you're using for swiping
 import { getCurrentUserProfile, getAllUsers } from './getMatches'; // Fetching user profiles
 import { calculateMatchScore } from './calculateMatchScore'; // Matching algorithm
-import './SwipeableMatches.css'; // Styles for this component
+import './styles/SwipeableMatches.css'; // Styles for this component
 
 const SwipeableMatches = () => {
   const [matches, setMatches] = useState([]);

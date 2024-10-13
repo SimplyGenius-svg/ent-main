@@ -1,7 +1,7 @@
 // src/firebaseHelpers/levelHelpers.js
 
 import { doc, updateDoc, increment } from 'firebase/firestore';
-import { db } from './firebase';
+import { db } from '../firebase';
 
 // Increment the user's level when a quest is completed
 export const levelUpUser = async (userId) => {

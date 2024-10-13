@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { collection, getDocs } from 'firebase/firestore'; // Import Firestore methods
-import { db } from './firebase'; // Import your firebase configuration
+import { db } from '../firebase'; // Import your firebase configuration
 import './styles/ConnectMap.css';
 
 const ConnectMap = () => {
