@@ -73,7 +73,7 @@ const HomePage = () => {
       <section className="cofounder-story">
         <h2 className="section-title">Two high school classmates, one big idea</h2>
         <p className="cofounder-text">
-          Our journey began in a high school journalism class, where two friends, Gyan and Andrew Xiao, discovered their shared passion for entrepreneurship and storytelling. From those early days, we dreamt of building something that would connect aspiring entrepreneurs, mentors, and investors. That dream became EntreLink, a platform that bridges the gap between passion and possibility, helping the next generation of innovators bring their ideas to life.
+        EntreLink was born from a shared desire to solve a problem we experienced firsthand. As students, Gyan and Andrew struggled to find the right connections to bring their ideas to life. We wanted to create a platform that would eliminate that struggle—an ecosystem where entrepreneurs, mentors, and investors could easily find one another. What started as an idea between two friends has grown into a dynamic network that helps innovators turn their passions into thriving businesses that would change the world.
         </p>
       </section>
 
