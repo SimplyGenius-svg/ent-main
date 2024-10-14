@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
-import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
+import { getDoc, doc } from 'firebase/firestore';
+import { ref as storageRef, getDownloadURL } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
 import './styles/Dashboard.css';
 import MentorHub from './MentorHub';
@@ -10,13 +10,15 @@ import ConnectProfile from './ConnectProfile';
 import ConnectSwipe from './ConnectSwipe';
 import InstantMessaging from './InstantMessaging';
 import ArticlesAndBlogs from './ArticlesAndBlogs';
-import ProfileSearch from './ProfileSearch'; // Import ProfileSearch component
-import { FaHome, Faedit, FaChalkboardTeacher, FaHandHoldingUsd, FaHandshake, FaComments, FaBook, FaSearch } from 'react-icons/fa'; // Remove FaEdit if not used
+import ProfileSearch from './ProfileSearch';
+import { FaHome, FaChalkboardTeacher, FaHandHoldingUsd, FaHandshake, FaComments, FaBook, FaSearch } from 'react-icons/fa';
 import RefinedProfile from './RefinedProfile';
+import EditProfile from './EditProfile';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [currentView, setCurrentView] = useState('home');
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false); // New state to handle edit profile modal
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,7 +53,7 @@ const Dashboard = () => {
             src={user?.profilePic || 'default-profile.png'}
             alt="Profile"
             className="profile-pic"
-            onClick={() => window.open('https://linkedin.com')} // Option for LinkedIn
+            onClick={() => setIsEditProfileOpen(true)} // Open edit profile modal
           />
           <button onClick={() => window.open('https://instagram.com')}>Connect Instagram</button>
         </div>
@@ -95,6 +97,11 @@ const Dashboard = () => {
         {currentView === 'articlesAndBlogs' && <ArticlesAndBlogs />}
         {currentView === 'refineProfile' && <RefinedProfile />}
         {currentView === 'profileSearch' && <ProfileSearch />}
+
+        {/* Edit Profile Modal */}
+        {isEditProfileOpen && (
+          <EditProfile user={user} onClose={() => setIsEditProfileOpen(false)} />
+        )}
       </div>
     </div>
   );
