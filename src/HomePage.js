@@ -1,7 +1,15 @@
 import React from 'react';
 import './styles/styles.css';
 
+import gyanImg from './gyan.png';
+import andrewImg from './andrew.png';
+import aaruImg from './aaru.jpg';
+
 const HomePage = () => {
+  const scrollToTeamSection = () => {
+    document.getElementById('our-team').scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="homepage-container">
       <header className="header">
@@ -10,6 +18,7 @@ const HomePage = () => {
           <a href="#about" className="nav-item">About Us</a>
           <a href="#features" className="nav-item">Features</a>
           <a href="#careers" className="nav-item">Careers</a>
+          <a onClick={scrollToTeamSection} className="nav-item underline">Our Team</a> {/* Always underlined */}
         </nav>
         <div className="cta-buttons">
           <a href="/signup" className="btn primary">Get Started</a>
@@ -22,7 +31,7 @@ const HomePage = () => {
         <p className="subtext">Connecting entrepreneurs, investors, and collaborators for a better tomorrow.</p>
         <div className="hero-cta">
           <a href="/signup" className="btn primary">Join Us</a>
-          <a href="#our-team" className="btn secondary">Learn More</a> {/* Updated Learn More button to scroll to "Our Team" */}
+          <a href="#our-team" className="btn secondary">Learn More</a>
         </div>
       </section>
 
@@ -55,20 +64,35 @@ const HomePage = () => {
         <a href="https://gyanb.notion.site/Entrelink-Careers-40c96e2d9b8345dda94b55c713f18344?pvs=4" className="btn primary">Explore Careers</a>
       </section>
 
-      {/* New Our Team Section */}
+      {/* New Mission Section */}
+      <section className="mission-section">
+        <h2 className="mission-title">Our mission is to <span>bridge the gap</span> between <span>passion</span> and <span>possibility</span>.</h2>
+      </section>
+
+      {/* Co-founder Story Section */}
+      <section className="cofounder-story">
+        <h2 className="section-title">Two high school classmates, one big idea</h2>
+        <p className="cofounder-text">
+          Our journey began in a high school journalism class, where two friends, Gyan and Andrew Xiao, discovered their shared passion for entrepreneurship and storytelling. From those early days, we dreamt of building something that would connect aspiring entrepreneurs, mentors, and investors. That dream became EntreLink, a platform that bridges the gap between passion and possibility, helping the next generation of innovators bring their ideas to life.
+        </p>
+      </section>
+
+      {/* Our Team Section */}
       <section id="our-team" className="our-team-section">
         <h2 className="section-title"><span className="icon">👥</span> Our Team</h2>
-        <p className="team-text">Meet the innovators behind EntreLink. Our diverse team is passionate about bringing entrepreneurs, mentors, and investors together to create powerful networks that drive growth.</p>
         <div className="team-grid">
           <div className="team-member">
+            <img src={gyanImg} alt="Gyan Bhambhani" className="team-photo" /> {/* Replaced placeholder */}
             <h3>Gyan Bhambhani</h3>
             <p>CEO & CoFounder</p>
           </div>
           <div className="team-member">
+            <img src={andrewImg} alt="Andrew Xiao" className="team-photo" /> {/* Replaced placeholder */}
             <h3>Andrew Xiao</h3>
-            <p>Chief Technology Officer</p>
+            <p>Co-Founder & CTO</p>
           </div>
           <div className="team-member">
+          <img src={aaruImg} alt="Aarushi Thaker" className="team-photo" />
             <h3>Aarushi Thaker</h3>
             <p>Chief Marketing Officer</p>
           </div>
