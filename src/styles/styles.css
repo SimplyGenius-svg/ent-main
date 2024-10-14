@@ -99,7 +99,7 @@ body {
 /* Our Team Section */
 .our-team-section {
   padding: var(--space-xl);
-  background: linear-gradient(135deg, #bebeff, #978ab3);
+  background: linear-gradient(135deg, #e7e7fc, #fbf9ff);
   text-align: center;
 }
 
@@ -638,7 +638,7 @@ body {
 }
 
 .our-team-section .section-title {
-  color: #fff;
+  color: #2b2b2b;
   margin-bottom: 40px;
 }
 
@@ -649,11 +649,11 @@ body {
 }
 
 .team-member {
-  background: rgba(255, 255, 255, 0.1);
+  background: #8d87db45;
   padding: 20px;
   border-radius: 10px;
   text-align: center;
-  color: #ffffff;
+  color: #070707;
 }
 
 .team-photo-placeholder {
@@ -671,7 +671,7 @@ body {
 
 .team-member p {
   font-size: 1rem;
-  color: #ccc;
+  color: #3a3a3a;
 }
 
 /* Footer */

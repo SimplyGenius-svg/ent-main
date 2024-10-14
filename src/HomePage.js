@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles/styles.css';
 
-import gyanImg from './gyan.png';
+import gyanImg from './gyan2.jpg';
 import andrewImg from './andrew.png';
 import aaruImg from './aaru.jpg';
 
