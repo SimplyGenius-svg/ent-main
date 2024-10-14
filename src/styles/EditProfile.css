@@ -338,3 +338,17 @@ html, body {
   font-size: 15px;
   color: #4a4a4a;
 }
+
+.profile-pic-preview {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.profile-pic-preview img {
+  width: 100px; /* Smaller size for the profile picture */
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

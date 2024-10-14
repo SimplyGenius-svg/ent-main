@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { auth, db } from "./firebase";
+import { auth, db, storage } from "./firebase";
 import { doc, updateDoc } from "firebase/firestore";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import './styles/EditProfile.css';
 
 const EditProfile = ({ user, onClose }) => {
   const [displayName, setDisplayName] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [instagram, setInstagram] = useState("");
+  const [expertise, setExpertise] = useState("");
+  const [role, setRole] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
+  const [profilePicUrl, setProfilePicUrl] = useState("");
 
   useEffect(() => {
     if (user) {
       setDisplayName(user.displayName || "");
       setLinkedin(user.linkedin || "");
       setInstagram(user.instagram || "");
+      setExpertise(user.expertise || "");
+      setRole(user.role || "");
+      setProfilePicUrl(user.profilePic || "");
     }
   }, [user]);
 
@@ -23,6 +31,9 @@ const EditProfile = ({ user, onClose }) => {
         displayName,
         linkedin,
         instagram,
+        expertise,
+        role,
+        profilePic: profilePicUrl,
       });
       alert("Profile updated successfully");
     } catch (err) {
@@ -30,9 +41,35 @@ const EditProfile = ({ user, onClose }) => {
     }
   };
 
+  const handleProfilePicChange = (e) => {
+    if (e.target.files[0]) {
+      setProfilePic(e.target.files[0]);
+    }
+  };
+
+  const handleUploadProfilePic = () => {
+    if (!profilePic) return;
+    const storageRef = ref(storage, `profilePictures/${auth.currentUser.uid}`);
+    const uploadTask = uploadBytesResumable(storageRef, profilePic);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.error("Error uploading profile picture:", error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          setProfilePicUrl(downloadURL);
+          alert("Profile picture updated successfully");
+        });
+      }
+    );
+  };
+
   return (
     <div className="edit-profile-modal-overlay" onClick={onClose}>
-      <div className="edit-profile-modal slide-in" onClick={(e) => e.stopPropagation()}>
+      <div className="edit-profile-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Edit Profile</h2>
           <button className="close-button" onClick={onClose}>X</button>
@@ -62,6 +99,33 @@ const EditProfile = ({ user, onClose }) => {
               onChange={(e) => setInstagram(e.target.value)}
             />
           </div>
+          <div className="form-group">
+            <label>Expertise</label>
+            <input
+              type="text"
+              value={expertise}
+              onChange={(e) => setExpertise(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <label>Role</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="">Select Role</option>
+              <option value="Entrepreneur">Entrepreneur</option>
+              <option value="Investor">Investor</option>
+              <option value="Advisor">Advisor</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label>Profile Picture</label>
+            <input type="file" onChange={handleProfilePicChange} />
+            <button onClick={handleUploadProfilePic} className="upload-button">Upload Picture</button>
+          </div>
+          {profilePicUrl && (
+            <div className="profile-pic-preview">
+              <img src={profilePicUrl} alt="Profile Preview" />
+            </div>
+          )}
           <button className="save-button" onClick={handleUpdateProfile}>Save Changes</button>
         </div>
       </div>
