@@ -5,19 +5,23 @@ import SignIn from './SignIn.js';
 import SignUp from './SignUp.js';
 import CreateProfile from './CreateProfile';
 import Dashboard from './Dashboard.js';
-import BuildProfile from './BuildProfile'; // Profile building component
-import Matches from './Matches'; // Matches component
-import ConnectSwipe from './ConnectSwipe'; // Importing ConnectSwipe component
-import RefinedProfile from './RefinedProfile.js'; // Importing RefinedProfile component
 import ProtectedRoute from './ProtectedRoute';
+import FounderResources from './FounderResources'; // Founder Resources component
+import BusinessHealthDashboard from './BusinessHealthDashboard'; // Business Health Dashboard component
+import AIChatbot from './AIChatbot'; // AI Chatbot component
+import ApolloConnections from './ApolloConnections'; // Apollo Connections component
 
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/create-profile" element={<CreateProfile />} />
+
+        {/* Protected Routes */}
         <Route
           path="/dashboard"
           element={
@@ -26,39 +30,40 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* New Routes for additional features */}
         <Route
-          path="/build-profile"
+          path="/founder-resources"
           element={
             <ProtectedRoute>
-              <BuildProfile />
+              <FounderResources />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/matches"
+          path="/business-health"
           element={
             <ProtectedRoute>
-              <Matches />
+              <BusinessHealthDashboard />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/connectswipe" // Adding the /connectswipe route
+          path="/ai-chatbot"
           element={
             <ProtectedRoute>
-              <ConnectSwipe />  {/* Adding the ConnectSwipe component here */}
+              <AIChatbot />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/refined-profile" // Adding the /refined-profile route
+          path="/apollo-connections"
           element={
             <ProtectedRoute>
-              <RefinedProfile />  {/* Adding the RefinedProfile component here */}
+              <ApolloConnections />
             </ProtectedRoute>
           }
         />
-        <Route path="/create-profile" element={<CreateProfile />} />
       </Routes>
     </Router>
   );
