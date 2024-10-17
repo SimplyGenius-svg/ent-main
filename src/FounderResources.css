@@ -1,0 +1,96 @@
+.founder-resources-container {
+  padding: 20px;
+  background-color: #f8f8ff;
+  border-radius: 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.search-filter-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  width: 60%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.filter-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-btn.active {
+  background-color: #0056b3;
+}
+
+.filter-btn:hover {
+  background-color: #0056b3;
+}
+
+.resource-card-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.resource-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: scale(1.03);
+}
+
+.resource-card-header {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #007bff;
+  color: #fff;
+}
+
+.resource-icon {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.resource-card-body {
+  padding: 15px;
+}
+
+.download-btn {
+  background-color: #28a745;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #218838;
+}

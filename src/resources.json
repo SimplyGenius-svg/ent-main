@@ -1,0 +1,27 @@
+[
+    {
+      "title": "Pitch Deck Templates",
+      "description": "Download customizable pitch deck templates in various formats.",
+      "category": "Pitch Decks",
+      "buttonText": "Download",
+      "downloadLink": "https://your-link.com/pitch-decks",
+      "icon": "path/to/icon1.png"
+    },
+    {
+      "title": "Financial Model Templates",
+      "description": "Use pre-built financial models to forecast your startup finances.",
+      "category": "Financial Models",
+      "buttonText": "Download",
+      "downloadLink": "https://your-link.com/financial-models",
+      "icon": "path/to/icon2.png"
+    },
+    {
+      "title": "Growth Hacking Playbooks",
+      "description": "Discover strategies to rapidly scale your startup.",
+      "category": "Growth Playbooks",
+      "buttonText": "View",
+      "downloadLink": "https://your-link.com/growth-hacking",
+      "icon": "path/to/icon3.png"
+    }
+  ]
+  
