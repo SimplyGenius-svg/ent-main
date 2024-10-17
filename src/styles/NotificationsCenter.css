@@ -1,0 +1,29 @@
+/* src/styles/NotificationsCenter.css */
+
+.notifications-center {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .notifications-center h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .received-requests, .sent-requests {
+    margin-bottom: 20px;
+  }
+  
+  .notification {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .notification p {
+    margin: 0;
+  }
+  

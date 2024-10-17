@@ -1,0 +1,122 @@
+/* src/styles/ThinkTank.css */
+
+.thinktank-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #f0f4f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .new-post-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .new-post-form textarea {
+    resize: none;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    margin-bottom: 10px;
+    height: 80px;
+  }
+  
+  .new-post-form input[type="file"] {
+    margin-bottom: 10px;
+  }
+  
+  .new-post-form button {
+    align-self: flex-end;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .new-post-form button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .posts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .post {
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  }
+  
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .post-header img.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .post-header h3.username {
+    margin: 0;
+    font-size: 1.1em;
+    cursor: pointer;
+    color: #007bff;
+  }
+  
+  .post-header h3.username:hover {
+    text-decoration: underline;
+  }
+  
+  .post-header .timestamp {
+    margin-left: auto;
+    font-size: 0.8em;
+    color: #888;
+  }
+  
+  .post-text {
+    margin: 10px 0;
+    font-size: 1em;
+  }
+  
+  .post-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .connect-btn {
+    padding: 6px 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .connect-btn:hover {
+    background-color: #218838;
+  }
+  
+  .loading-spinner {
+    text-align: center;
+    padding: 50px;
+    font-size: 1.5em;
+  }
+  

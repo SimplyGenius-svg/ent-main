@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDoc, doc, updateDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, query, collection, where, getDocs } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
-import './styles/Dashboard.css'; // New styles file
+import './styles/Dashboard.css'; // Ensure this path is correct
 import MentorHub from './MentorHub';
 import InvestorHub from './InvestorHub';
 import FounderResources from './FounderResources';
 import BusinessHealthDashboard from './BusinessHealthDashboard';
 import AIChatbot from './AIChatbot';
 import ApolloConnections from './ApolloConnections';
-import { FaHome, FaChalkboardTeacher, FaHandHoldingUsd, FaSearch, FaRobot, FaChartLine, FaTools } from 'react-icons/fa';
+import ThinkTank from './ThinkTank';
+import NotificationsCenter from './NotificationsCenter';
+import { FaHome, FaChalkboardTeacher, FaHandHoldingUsd, FaSearch, FaRobot, FaChartLine, FaTools, FaBell, FaComments } from 'react-icons/fa';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [currentView, setCurrentView] = useState('home');
   const [isLoading, setIsLoading] = useState(true);
-  const [showProfile, setShowProfile] = useState(false); // For toggling profile view
-  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false); // For edit profile modal
-  const [newMajor, setNewMajor] = useState(user?.major || ''); // Edit major
-  const [newProfilePic, setNewProfilePic] = useState(null); // Profile picture upload
+  const [showProfile, setShowProfile] = useState(false);
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [newMajor, setNewMajor] = useState('');
+  const [newProfilePic, setNewProfilePic] = useState(null);
+  const [newReceivedRequests, setNewReceivedRequests] = useState(0);
   const navigate = useNavigate();
 
+  // Fetch user data and received connection requests
   useEffect(() => {
     if (!auth.currentUser) {
       navigate('/signin');
@@ -35,7 +39,12 @@ const Dashboard = () => {
         const userSnapshot = await getDoc(userDocRef);
         if (userSnapshot.exists()) {
           const userData = userSnapshot.data();
-          const profilePicUrl = await getDownloadURL(storageRef(storage, `profilePictures/${auth.currentUser.uid}`));
+          let profilePicUrl;
+          try {
+            profilePicUrl = await getDownloadURL(storageRef(storage, `profilePictures/${auth.currentUser.uid}`));
+          } catch (error) {
+            profilePicUrl = 'path/to/default-profile.png'; // Default profile image path
+          }
           setUser({ ...userData, profilePic: profilePicUrl });
         }
       } catch (error) {
@@ -45,25 +54,35 @@ const Dashboard = () => {
       }
     };
 
+    const fetchNewReceivedRequests = async () => {
+      try {
+        const q = query(
+          collection(db, 'receivedRequests'),
+          where('to', '==', auth.currentUser.uid),
+          where('status', '==', 'pending')
+        );
+        const querySnapshot = await getDocs(q);
+        setNewReceivedRequests(querySnapshot.size);
+      } catch (error) {
+        console.error('Error fetching new received requests:', error);
+      }
+    };
+
     fetchUserData();
+    fetchNewReceivedRequests();
   }, [navigate]);
 
-  const toggleProfileView = () => {
-    setShowProfile(!showProfile);
-  };
+  // Toggle profile view
+  const toggleProfileView = () => setShowProfile(!showProfile);
 
-  const toggleEditProfileModal = () => {
-    setIsEditProfileOpen(!isEditProfileOpen);
-  };
+  // Toggle edit profile modal
+  const toggleEditProfileModal = () => setIsEditProfileOpen(!isEditProfileOpen);
 
-  const handleMajorChange = (e) => {
-    setNewMajor(e.target.value);
-  };
+  // Handle profile changes
+  const handleMajorChange = (e) => setNewMajor(e.target.value);
+  const handleProfilePicChange = (e) => setNewProfilePic(e.target.files[0]);
 
-  const handleProfilePicChange = (e) => {
-    setNewProfilePic(e.target.files[0]);
-  };
-
+  // Save profile data
   const handleProfileSave = async () => {
     if (newProfilePic) {
       const storageReference = storageRef(storage, `profilePictures/${auth.currentUser.uid}`);
@@ -92,16 +111,16 @@ const Dashboard = () => {
   };
 
   if (isLoading) {
-    return <div className="loading-spinner">Loading...</div>; // Add a loading spinner
+    return <div className="loading-spinner">Loading...</div>;
   }
 
   return (
     <div className="new-dashboard-container">
-      {/* Sidebar Navigation */}
+      {/* Sidebar */}
       <div className="sidebar">
         <div className="profile-container" onClick={toggleProfileView}>
           <img
-            src={user?.profilePic || 'default-profile.png'}
+            src={user?.profilePic || 'path/to/default-profile.png'}
             alt="Profile"
             className="profile-pic"
           />
@@ -128,16 +147,23 @@ const Dashboard = () => {
           <li className={currentView === 'apolloConnections' ? 'active' : ''} onClick={() => setCurrentView('apolloConnections')}>
             <FaSearch /> Apollo Connections
           </li>
+          <li className={currentView === 'thinkTank' ? 'active' : ''} onClick={() => setCurrentView('thinkTank')}>
+            <FaComments /> ThinkTank
+          </li>
+          <li className={currentView === 'notifications' ? 'active' : ''} onClick={() => setCurrentView('notifications')}>
+            <FaBell /> Notifications
+            {newReceivedRequests > 0 && <span className="badge">{newReceivedRequests}</span>}
+          </li>
         </ul>
       </div>
 
-      {/* Main Content */}
+      {/* Main content */}
       <div className="main-content">
         {showProfile ? (
           <section className="profile-view">
             <div className="profile-header">
               <img
-                src={user?.profilePic || 'default-profile.png'}
+                src={user?.profilePic || 'path/to/default-profile.png'}
                 alt="Profile"
                 className="large-profile-pic"
               />
@@ -171,11 +197,13 @@ const Dashboard = () => {
             {currentView === 'healthDashboard' && <BusinessHealthDashboard />}
             {currentView === 'aiChatbot' && <AIChatbot />}
             {currentView === 'apolloConnections' && <ApolloConnections />}
+            {currentView === 'thinkTank' && <ThinkTank />}
+            {currentView === 'notifications' && <NotificationsCenter />}
           </>
         )}
       </div>
 
-      {/* Edit Profile Modal */}
+      {/* Edit profile modal */}
       {isEditProfileOpen && (
         <div className="edit-profile-modal">
           <div className="modal-header">

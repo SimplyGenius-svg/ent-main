@@ -1,0 +1,40 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Rules for sentRequests collection
+    match /sentRequests/{requestId} {
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.from;
+      allow read: if request.auth != null && request.auth.uid == resource.data.from;
+      allow update, delete: if false; // Prevent updates or deletions
+    }
+
+    // Rules for receivedRequests collection
+    match /receivedRequests/{requestId} {
+      allow create: if false; // Prevent direct creation; should be created via sentRequests
+      allow read: if request.auth != null && request.auth.uid == resource.data.to;
+      allow update: if request.auth != null && request.auth.uid == resource.data.to && 
+                    (request.resource.data.status == 'accepted' || request.resource.data.status == 'rejected');
+      allow delete: if false; // Prevent deletions
+    }
+
+    // Rules for thinkTankPosts collection
+    match /thinkTankPosts/{postId} {
+      allow create: if request.auth != null;
+      allow read: if true; // Publicly readable
+      allow update, delete: if request.auth != null && request.auth.uid == resource.data.user.uid;
+    }
+
+    // Rules for users collection (for profile viewing)
+    match /users/{userId} {
+      allow read: if request.auth != null; // Allow all authenticated users to read profiles
+      allow write: if request.auth != null && request.auth.uid == userId; // Users can update their own profiles
+    }
+
+    // Additional rules for other collections can be added here
+  }
+}
+
+
+
+
+
