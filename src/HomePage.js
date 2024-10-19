@@ -84,12 +84,12 @@ const HomePage = () => {
           <div className="team-member">
             <img src={gyanImg} alt="Gyan Bhambhani" className="team-photo" /> {/* Replaced placeholder */}
             <h3>Gyan Bhambhani</h3>
-            <p>CEO & CoFounder</p>
+            <p>Founder & Chief Executive Officer</p>
           </div>
           <div className="team-member">
             <img src={andrewImg} alt="Andrew Xiao" className="team-photo" /> {/* Replaced placeholder */}
             <h3>Andrew Xiao</h3>
-            <p>Co-Founder & CTO</p>
+            <p>Chief Technology Officer</p>
           </div>
           <div className="team-member">
           <img src={aaruImg} alt="Aarushi Thaker" className="team-photo" />
