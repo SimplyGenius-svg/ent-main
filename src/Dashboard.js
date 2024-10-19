@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDoc, doc, updateDoc, query, collection, where, getDocs } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, query, collection, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
 import { db, auth, storage } from './firebase';
-import './styles/Dashboard.css'; // Ensure this path is correct
+import './styles/Dashboard.css';
 import MentorHub from './MentorHub';
 import InvestorHub from './InvestorHub';
 import FounderResources from './FounderResources';
@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [newMajor, setNewMajor] = useState('');
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [newReceivedRequests, setNewReceivedRequests] = useState(0);
+  const [connections, setConnections] = useState([]); // State to hold connections with user names
   const navigate = useNavigate();
 
   // Fetch user data and received connection requests
@@ -57,7 +58,7 @@ const Dashboard = () => {
     const fetchNewReceivedRequests = async () => {
       try {
         const q = query(
-          collection(db, 'receivedRequests'),
+          collection(db, 'connections'),
           where('to', '==', auth.currentUser.uid),
           where('status', '==', 'pending')
         );
@@ -68,8 +69,44 @@ const Dashboard = () => {
       }
     };
 
+    // Real-time listener for accepted connections
+    const subscribeToConnections = () => {
+      const q = query(
+        collection(db, 'connections'),
+        where('status', '==', 'accepted'),
+        where('to', '==', auth.currentUser.uid)  // Filter by the current user
+      );
+    
+      const unsubscribe = onSnapshot(q, async (snapshot) => {
+        const connectionList = await Promise.all(snapshot.docs.map(async (connectionDoc) => {
+          const connectionData = connectionDoc.data();
+    
+          // Fetch the name of the user using the UID
+          const userDocRef = doc(db, 'users', connectionData.from); // Correct usage of doc
+          const userSnapshot = await getDoc(userDocRef);
+          const fromUserName = userSnapshot.exists() ? userSnapshot.data().displayName : connectionData.from; // Fallback to UID if name is unavailable
+    
+          return {
+            id: connectionDoc.id,
+            ...connectionData,
+            fromUserName, // Attach the display name instead of just the UID
+          };
+        }));
+        setConnections(connectionList);
+      });
+    
+      return unsubscribe; // Clean up the listener on unmount
+    };
+    
+
     fetchUserData();
     fetchNewReceivedRequests();
+    const unsubscribeConnections = subscribeToConnections(); // Subscribe to connections
+
+    // Cleanup on component unmount
+    return () => {
+      unsubscribeConnections();
+    };
   }, [navigate]);
 
   // Toggle profile view
@@ -182,6 +219,14 @@ const Dashboard = () => {
                     <h2>Recent Activity</h2>
                     <p>Connected with new investors</p>
                     <p>Explored new mentorship opportunities</p>
+                  </div>
+                  <div className="widget">
+                    <h2>Your Connections</h2>
+                    <ul>
+                      {connections.map((connection) => (
+                        <li key={connection.id}>Connected with {connection.fromUserName}</li> 
+                      ))}
+                    </ul>
                   </div>
                   <div className="widget">
                     <h2>Recommended Actions</h2>

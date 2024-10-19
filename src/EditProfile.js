@@ -4,12 +4,13 @@ import { doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import './styles/EditProfile.css';
 
-const EditProfile = ({ user, onClose }) => {
+const EditProfile = ({ user, onClose, onProfileUpdate }) => {
   const [displayName, setDisplayName] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [instagram, setInstagram] = useState("");
   const [expertise, setExpertise] = useState("");
   const [role, setRole] = useState("");
+  const [major, setMajor] = useState(""); // Added Major field
   const [profilePic, setProfilePic] = useState(null);
   const [profilePicUrl, setProfilePicUrl] = useState("");
 
@@ -20,6 +21,7 @@ const EditProfile = ({ user, onClose }) => {
       setInstagram(user.instagram || "");
       setExpertise(user.expertise || "");
       setRole(user.role || "");
+      setMajor(user.major || ""); // Initialize Major
       setProfilePicUrl(user.profilePic || "");
     }
   }, [user]);
@@ -33,8 +35,20 @@ const EditProfile = ({ user, onClose }) => {
         instagram,
         expertise,
         role,
+        major, // Save Major to Firestore
         profilePic: profilePicUrl,
       });
+
+      const updatedUser = {
+        displayName,
+        linkedin,
+        instagram,
+        expertise,
+        role,
+        major, // Include Major in updated profile
+        profilePic: profilePicUrl
+      };
+      onProfileUpdate(updatedUser); // Call the callback with updated user data
       alert("Profile updated successfully");
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -115,6 +129,14 @@ const EditProfile = ({ user, onClose }) => {
               <option value="Investor">Investor</option>
               <option value="Advisor">Advisor</option>
             </select>
+          </div>
+          <div className="form-group">
+            <label>Major</label>  {/* Major field added */}
+            <input
+              type="text"
+              value={major}
+              onChange={(e) => setMajor(e.target.value)}
+            />
           </div>
           <div className="form-group">
             <label>Profile Picture</label>
