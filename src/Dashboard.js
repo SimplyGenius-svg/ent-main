@@ -13,7 +13,7 @@ import ApolloConnections from './ApolloConnections';
 import ThinkTank from './ThinkTank';
 import NotificationsCenter from './NotificationsCenter';
 import { FaHome, FaChalkboardTeacher, FaHandHoldingUsd, FaSearch, FaRobot, FaChartLine, FaTools, FaBell, FaComments } from 'react-icons/fa';
-
+import { FaArrowRight } from 'react-icons/fa'; // Import the arrow icon
 const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [currentView, setCurrentView] = useState('home');
@@ -25,6 +25,9 @@ const Dashboard = () => {
   const [newReceivedRequests, setNewReceivedRequests] = useState(0);
   const [connections, setConnections] = useState([]); // State to hold connections with user names
   const navigate = useNavigate();
+  const goToHomepage = () => {
+    navigate('/'); // Assuming '/' is the route for HomePage.js
+  };
 
   // Fetch user data and received connection requests
   useEffect(() => {
@@ -150,6 +153,7 @@ const Dashboard = () => {
   if (isLoading) {
     return <div className="loading-spinner">Loading...</div>;
   }
+  
 
   return (
     <div className="new-dashboard-container">
@@ -248,6 +252,18 @@ const Dashboard = () => {
         )}
       </div>
 
+      <div className="new-dashboard-container">
+    {/* Back to Homepage Button */}
+    <button className="back-home-btn" onClick={goToHomepage}>
+      Back to Homepage
+    </button>
+    
+    {/* Rest of your dashboard code */}
+    <div className="main-content">
+      {/* Your existing main content code */}
+    </div>
+  </div>
+
       {/* Edit profile modal */}
       {isEditProfileOpen && (
         <div className="edit-profile-modal">
@@ -267,7 +283,12 @@ const Dashboard = () => {
         </div>
       )}
     </div>
+
   );
+
+  
+  
+
 };
 
 export default Dashboard;
