@@ -27,8 +27,8 @@ const HomePage = () => {
       </header>
 
       <section className="hero-section">
-        <h1 className="headline">Build Connections, Drive Growth</h1>
-        <p className="subtext">Connecting entrepreneurs, investors, and collaborators for a better tomorrow.</p>
+        <h1 className="headline">Fuel Growth with Data-Driven Connections</h1>
+        <p className="subtext">The ultimate platform for entrepreneurs, investors, and mentors powered by real-time data and insights.</p>
         <div className="hero-cta">
           <a href="/signup" className="btn primary">Join Us</a>
           <a href="#our-team" className="btn secondary">Learn More</a>
@@ -36,44 +36,44 @@ const HomePage = () => {
       </section>
 
       <section id="features" className="features-section">
-        <h2 className="section-title"><span className="icon">⚙️</span> Our Features</h2>
+        <h2 className="section-title"><span className="icon">⚙️</span> Our Data-Driven Features</h2>
         <div className="features-grid">
           <div className="feature-card">
-            <h3>Networking Simplified</h3>
-            <p>Match with mentors, collaborators, and investors effortlessly.</p>
+            <h3>AI-Powered Networking</h3>
+            <p>Leverage data-driven matchmaking to find the right mentors, collaborators, and investors.</p>
           </div>
           <div className="feature-card">
-            <h3>Real-Time Chats</h3>
-            <p>Communicate instantly and keep your projects moving forward.</p>
+            <h3>Real-Time Data Insights</h3>
+            <p>Track entrepreneurial trends, investment behaviors, and mentorship patterns to stay ahead.</p>
           </div>
           <div className="feature-card">
-            <h3>Pitch in Seconds</h3>
-            <p>Upload quick video pitches to attract the right audience.</p>
+            <h3>Personalized Recommendations</h3>
+            <p>Get matched with opportunities and resources based on your data profile and goals.</p>
           </div>
         </div>
       </section>
 
       <section id="about" className="about-section">
         <h2 className="section-title"><span className="icon">ℹ️</span> About Us</h2>
-        <p className="about-text">EntreLink is redefining entrepreneurship by making it easier to connect, collaborate, and succeed. From investor matchmaking to real-time collaboration tools, we are empowering tomorrow’s leaders.</p>
+        <p className="about-text">EntreLink is the future of entrepreneurship platforms—combining powerful data analytics with a network of innovators, mentors, and investors. By harnessing the power of data, we help you find the right opportunities to thrive.</p>
       </section>
 
       <section id="careers" className="careers-section">
         <h2 className="section-title"><span className="icon">💼</span> Join Our Team</h2>
-        <p className="careers-text">Passionate about entrepreneurship and tech? We’re looking for forward-thinking individuals to help shape the future.</p>
+        <p className="careers-text">Want to be at the forefront of a data revolution in entrepreneurship? Join us and be a part of building the future of business innovation.</p>
         <a href="https://gyanb.notion.site/Entrelink-Careers-40c96e2d9b8345dda94b55c713f18344?pvs=4" className="btn primary">Explore Careers</a>
       </section>
 
-      {/* New Mission Section */}
+      {/* New Data Mission Section */}
       <section className="mission-section">
-        <h2 className="mission-title">Our mission is to <span>bridge the gap</span> between <span>passion</span> and <span>possibility</span>.</h2>
+        <h2 className="mission-title">Our mission is to empower entrepreneurs with <span>data-driven insights</span> and <span>real-time connections</span>.</h2>
       </section>
 
-      {/* Co-founder Story Section */}
-      <section className="cofounder-story">
-        <h2 className="section-title">Two high school classmates, one big idea</h2>
-        <p className="cofounder-text">
-        EntreLink was born from a shared desire to solve a problem we experienced firsthand. As students, Gyan and Andrew struggled to find the right connections to bring their ideas to life. We wanted to create a platform that would eliminate that struggle—an ecosystem where entrepreneurs, mentors, and investors could easily find one another. What started as an idea between two friends has grown into a dynamic network that helps innovators turn their passions into thriving businesses that would change the world.
+      {/* Data-Driven Entrepreneurship Section */}
+      <section className="data-driven-section">
+        <h2 className="section-title">Entrepreneurship Meets Data</h2>
+        <p className="data-driven-text">
+          EntreLink is more than just a networking platform. We use cutting-edge data analytics to provide insights that fuel entrepreneurial success. Whether you're looking for your next investment, mentor, or collaboration, our data-driven engine makes sure you're always one step ahead.
         </p>
       </section>
 
@@ -100,7 +100,7 @@ const HomePage = () => {
       </section>
 
       <footer className="footer">
-        <p>&copy; 2024 EntreLink. Building the future of connections.</p>
+        <p>&copy; 2024 EntreLink. Data-Driven Connections for a Brighter Future.</p>
       </footer>
     </div>
   );
