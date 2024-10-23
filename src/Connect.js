@@ -1,16 +1,14 @@
 // src/Connect.js
 
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { query, collection, where, getDocs } from 'firebase/firestore';
-import { db, auth } from './firebase';
-import './styles/Connect.css';
-
-
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
+import { query, collection, where, getDocs, addDoc } from "firebase/firestore";
+import { db, auth } from "./actions/firebase";
+import "./styles/Connect.css";
 
 const Connect = () => {
   const { uid } = useParams();
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState("");
 
   const handleSendConnectionRequest = async () => {
     if (uid === auth.currentUser.uid) {
@@ -21,30 +19,30 @@ const Connect = () => {
     try {
       // Check if a connection request already exists
       const q = query(
-        collection(db, 'connections'),
-        where('from', '==', auth.currentUser.uid),
-        where('to', '==', uid)
+        collection(db, "connections"),
+        where("from", "==", auth.currentUser.uid),
+        where("to", "==", uid)
       );
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
-        alert('Connection request already sent.');
+        alert("Connection request already sent.");
         return;
       }
 
       const connectionData = {
         from: auth.currentUser.uid,
         to: uid,
-        status: 'pending',
+        status: "pending",
         timestamp: new Date(),
       };
 
       // Store the request in connections
-      await addDoc(collection(db, 'connections'), connectionData);
+      await addDoc(collection(db, "connections"), connectionData);
 
-      setStatus('Connection request sent!');
+      setStatus("Connection request sent!");
     } catch (error) {
-      console.error('Error sending connection request:', error);
-      setStatus('Failed to send connection request.');
+      console.error("Error sending connection request:", error);
+      setStatus("Failed to send connection request.");
     }
   };
 

@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
-import './styles/MentorHub.css';
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./actions/firebase";
+import "./styles/MentorHub.css";
 
 const MentorHub = () => {
   const [mentors, setMentors] = useState([]);
-  const [goals, setGoals] = useState([{ text: 'Increase Product-Market Fit', completed: false }]);
+  const [goals, setGoals] = useState([
+    { text: "Increase Product-Market Fit", completed: false },
+  ]);
 
   useEffect(() => {
     const fetchMentors = async () => {
-      const mentorsCollection = collection(db, 'mentors');
+      const mentorsCollection = collection(db, "mentors");
       const mentorsSnapshot = await getDocs(mentorsCollection);
       const mentorsList = mentorsSnapshot.docs.map((doc) => doc.data());
       setMentors(mentorsList);
@@ -35,9 +37,33 @@ const MentorHub = () => {
       <div className="resource-section">
         <h2>Mentor Resources</h2>
         <ul className="resources-list">
-          <li><a href="https://mentorloop.com/blog/the-mentoring-handbook/" target="_blank" rel="noopener noreferrer">The Mentorship Handbook</a></li>
-          <li><a href="https://www.ycombinator.com/library/4s-growth-tactics" target="_blank" rel="noopener noreferrer">Growth Tactics for Early Startups</a></li>
-          <li><a href="https://medium.com/swlh/10-ways-to-lead-founders" target="_blank" rel="noopener noreferrer">How to Lead Founders Effectively</a></li>
+          <li>
+            <a
+              href="https://mentorloop.com/blog/the-mentoring-handbook/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              The Mentorship Handbook
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.ycombinator.com/library/4s-growth-tactics"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Growth Tactics for Early Startups
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://medium.com/swlh/10-ways-to-lead-founders"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              How to Lead Founders Effectively
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -45,12 +71,21 @@ const MentorHub = () => {
         <h2>Goal Tracker</h2>
         <ul className="goals-list">
           {goals.map((goal, index) => (
-            <li key={index} className={`goal-item ${goal.completed ? 'completed' : ''}`} onClick={() => toggleGoalComplete(index)}>
+            <li
+              key={index}
+              className={`goal-item ${goal.completed ? "completed" : ""}`}
+              onClick={() => toggleGoalComplete(index)}
+            >
               {goal.text}
             </li>
           ))}
         </ul>
-        <button className="add-goal-button" onClick={() => addGoal(prompt('Enter new goal:'))}>Add New Goal</button>
+        <button
+          className="add-goal-button"
+          onClick={() => addGoal(prompt("Enter new goal:"))}
+        >
+          Add New Goal
+        </button>
       </div>
 
       <div className="mentor-list">
@@ -61,8 +96,8 @@ const MentorHub = () => {
               <div key={index} className="mentor-card">
                 <h3>{mentor.name}</h3>
                 <p>Expertise: {mentor.expertise}</p>
-                <p>Industries: {mentor.industries.join(', ')}</p>
-                <p>Past Mentees: {mentor.pastMentees.join(', ')}</p>
+                <p>Industries: {mentor.industries.join(", ")}</p>
+                <p>Past Mentees: {mentor.pastMentees.join(", ")}</p>
               </div>
             ))
           ) : (

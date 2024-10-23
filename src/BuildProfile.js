@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db, auth } from './firebase'; // Firebase setup
-import './styles/BuildProfile.css'; // Import any custom styles
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db, auth } from "./actions/firebase"; // Firebase setup
+import "./styles/BuildProfile.css"; // Import any custom styles
 
 const BuildProfile = () => {
   const [formData, setFormData] = useState({
-    industry: '',
+    industry: "",
     expertise: [],
-    goals: '',
-    businessStage: '',
+    goals: "",
+    businessStage: "",
   });
   const [isSaving, setIsSaving] = useState(false);
   const [userExists, setUserExists] = useState(false);
@@ -18,21 +18,21 @@ const BuildProfile = () => {
   useEffect(() => {
     const checkIfProfileExists = async () => {
       if (!auth.currentUser) {
-        navigate('/signin');
+        navigate("/signin");
         return;
       }
 
       try {
-        const userDocRef = doc(db, 'users', auth.currentUser.uid);
+        const userDocRef = doc(db, "users", auth.currentUser.uid);
         const userSnapshot = await getDoc(userDocRef);
 
         if (userSnapshot.exists()) {
           // If profile exists, set userExists to true and navigate to the matches page
           setUserExists(true);
-          navigate('/matches'); // Redirect to matches directly if profile exists
+          navigate("/matches"); // Redirect to matches directly if profile exists
         }
       } catch (error) {
-        console.error('Error fetching user profile: ', error);
+        console.error("Error fetching user profile: ", error);
       }
     };
 
@@ -57,23 +57,28 @@ const BuildProfile = () => {
 
   const handleSaveProfile = async () => {
     // Add basic validation
-    if (!formData.industry || formData.expertise.length === 0 || !formData.goals || !formData.businessStage) {
-      alert('Please fill in all fields before saving your profile.');
+    if (
+      !formData.industry ||
+      formData.expertise.length === 0 ||
+      !formData.goals ||
+      !formData.businessStage
+    ) {
+      alert("Please fill in all fields before saving your profile.");
       return;
     }
 
     setIsSaving(true);
     try {
-      const userDocRef = doc(db, 'users', auth.currentUser.uid);
+      const userDocRef = doc(db, "users", auth.currentUser.uid);
 
       await setDoc(userDocRef, formData, { merge: true });
-      console.log('Profile saved successfully!');
+      console.log("Profile saved successfully!");
       setIsSaving(false);
 
       // Once the profile is saved, redirect to the matches page
-      navigate('/matches');
+      navigate("/matches");
     } catch (error) {
-      console.error('Error saving profile: ', error);
+      console.error("Error saving profile: ", error);
       setIsSaving(false);
     }
   };
@@ -133,7 +138,7 @@ const BuildProfile = () => {
           />
         </label>
         <button type="button" onClick={handleSaveProfile} disabled={isSaving}>
-          {isSaving ? 'Saving...' : 'Save Profile'}
+          {isSaving ? "Saving..." : "Save Profile"}
         </button>
       </form>
     </div>

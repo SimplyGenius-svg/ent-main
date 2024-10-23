@@ -1,13 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { db, auth, storage } from './firebase';
-import { collection, addDoc, getDocs, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { ref as storageRef, getDownloadURL, uploadBytesResumable } from 'firebase/storage';
-import { useNavigate } from 'react-router-dom';
-import './styles/ThinkTank.css'; // Ensure this CSS file exists
+import React, { useState, useEffect } from "react";
+import { db, auth, storage } from "./actions/firebase";
+import {
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp,
+} from "firebase/firestore";
+import {
+  ref as storageRef,
+  getDownloadURL,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { useNavigate } from "react-router-dom";
+import "./styles/ThinkTank.css"; // Ensure this CSS file exists
 
 const ThinkTank = () => {
   const [posts, setPosts] = useState([]);
-  const [newPost, setNewPost] = useState('');
+  const [newPost, setNewPost] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -16,7 +27,10 @@ const ThinkTank = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const q = query(collection(db, 'thinkTankPosts'), orderBy('timestamp', 'desc'));
+        const q = query(
+          collection(db, "thinkTankPosts"),
+          orderBy("timestamp", "desc")
+        );
         const querySnapshot = await getDocs(q);
         const postsArray = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -24,7 +38,7 @@ const ThinkTank = () => {
         }));
         setPosts(postsArray);
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error("Error fetching posts:", error);
       }
     };
 
@@ -34,16 +48,21 @@ const ThinkTank = () => {
   // Handle image upload
   const handleImageUpload = async () => {
     if (imageFile) {
-      const imageName = `${auth.currentUser.uid}_${Date.now()}_${imageFile.name}`;
-      const storageReference = storageRef(storage, `thinkTankImages/${imageName}`);
+      const imageName = `${auth.currentUser.uid}_${Date.now()}_${
+        imageFile.name
+      }`;
+      const storageReference = storageRef(
+        storage,
+        `thinkTankImages/${imageName}`
+      );
       const uploadTask = uploadBytesResumable(storageReference, imageFile);
 
       return new Promise((resolve, reject) => {
         uploadTask.on(
-          'state_changed',
+          "state_changed",
           null,
           (error) => {
-            console.error('Error uploading image:', error);
+            console.error("Error uploading image:", error);
             reject(error);
           },
           async () => {
@@ -67,21 +86,24 @@ const ThinkTank = () => {
       const imageUrl = await handleImageUpload();
       const postData = {
         text: newPost.trim(),
-        imageUrl: imageUrl || '',
+        imageUrl: imageUrl || "",
         user: {
           displayName: auth.currentUser.displayName,
           uid: auth.currentUser.uid,
-          profilePic: auth.currentUser.photoURL || 'default-profile.png',
+          profilePic: auth.currentUser.photoURL || "default-profile.png",
         },
         timestamp: serverTimestamp(),
       };
 
-      await addDoc(collection(db, 'thinkTankPosts'), postData);
-      setNewPost('');
+      await addDoc(collection(db, "thinkTankPosts"), postData);
+      setNewPost("");
       setImageFile(null);
 
       // Refresh posts
-      const q = query(collection(db, 'thinkTankPosts'), orderBy('timestamp', 'desc'));
+      const q = query(
+        collection(db, "thinkTankPosts"),
+        orderBy("timestamp", "desc")
+      );
       const querySnapshot = await getDocs(q);
       const postsArray = querySnapshot.docs.map((doc) => ({
         id: doc.id,
@@ -89,7 +111,7 @@ const ThinkTank = () => {
       }));
       setPosts(postsArray);
     } catch (error) {
-      console.error('Error adding post:', error);
+      console.error("Error adding post:", error);
     } finally {
       setLoading(false);
     }
@@ -108,16 +130,16 @@ const ThinkTank = () => {
     }
 
     try {
-      const connectionRef = collection(db, 'connections');
+      const connectionRef = collection(db, "connections");
       await addDoc(connectionRef, {
         from: auth.currentUser.uid,
         to: uid,
-        status: 'pending',
+        status: "pending",
         timestamp: serverTimestamp(),
       });
-      alert('Connection request sent!');
+      alert("Connection request sent!");
     } catch (error) {
-      console.error('Error sending connection request:', error);
+      console.error("Error sending connection request:", error);
     }
   };
 
@@ -140,7 +162,7 @@ const ThinkTank = () => {
           onChange={(e) => setImageFile(e.target.files[0])}
         />
         <button type="submit" disabled={loading}>
-          {loading ? 'Posting...' : 'Post'}
+          {loading ? "Posting..." : "Post"}
         </button>
       </form>
 
@@ -151,21 +173,29 @@ const ThinkTank = () => {
             <div key={post.id} className="post">
               <div className="post-header">
                 <img
-                  src={post.user.profilePic || 'default-profile.png'}
+                  src={post.user.profilePic || "default-profile.png"}
                   alt="Profile"
                   className="profile-pic"
                   onClick={() => handleProfileClick(post.user.uid)}
                 />
-                <h3 onClick={() => handleProfileClick(post.user.uid)} className="username">
+                <h3
+                  onClick={() => handleProfileClick(post.user.uid)}
+                  className="username"
+                >
                   {post.user.displayName}
                 </h3>
                 <span className="timestamp">
-                  {post.timestamp?.toDate().toLocaleString() || 'Just now'}
+                  {post.timestamp?.toDate().toLocaleString() || "Just now"}
                 </span>
               </div>
               <p className="post-text">{post.text}</p>
-              {post.imageUrl && <img src={post.imageUrl} alt="Post" className="post-image" />}
-              <button className="connect-btn" onClick={() => handleConnect(post.user.uid)}>
+              {post.imageUrl && (
+                <img src={post.imageUrl} alt="Post" className="post-image" />
+              )}
+              <button
+                className="connect-btn"
+                onClick={() => handleConnect(post.user.uid)}
+              >
                 Connect
               </button>
             </div>

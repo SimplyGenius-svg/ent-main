@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from './firebase';
-import './styles/InvestorHub.css';
+import React, { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./actions/firebase";
+import "./styles/InvestorHub.css";
 
 const InvestorHub = () => {
   const [investors, setInvestors] = useState([]);
@@ -10,7 +10,7 @@ const InvestorHub = () => {
 
   useEffect(() => {
     const fetchInvestors = async () => {
-      const investorsCollection = collection(db, 'investors');
+      const investorsCollection = collection(db, "investors");
       const investorsSnapshot = await getDocs(investorsCollection);
       const investorsList = investorsSnapshot.docs.map((doc) => doc.data());
       setInvestors(investorsList);
@@ -28,7 +28,7 @@ const InvestorHub = () => {
   };
 
   const calculateReturn = () => {
-    return ((investmentInput * (1 + returnRate / 100))).toFixed(2);
+    return (investmentInput * (1 + returnRate / 100)).toFixed(2);
   };
 
   return (
@@ -38,9 +38,33 @@ const InvestorHub = () => {
       <div className="resource-section">
         <h2>Investor Insights</h2>
         <ul className="resources-list">
-          <li><a href="https://www.cbinsights.com/research/" target="_blank" rel="noopener noreferrer">Market Trends Report 2024</a></li>
-          <li><a href="https://www.angel.co/invest" target="_blank" rel="noopener noreferrer">Guide to Startup Investments</a></li>
-          <li><a href="https://pitch.com/templates" target="_blank" rel="noopener noreferrer">Investor Pitch Deck Templates</a></li>
+          <li>
+            <a
+              href="https://www.cbinsights.com/research/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Market Trends Report 2024
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.angel.co/invest"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Guide to Startup Investments
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://pitch.com/templates"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Investor Pitch Deck Templates
+            </a>
+          </li>
         </ul>
       </div>
 
@@ -48,13 +72,24 @@ const InvestorHub = () => {
         <h2>Future ROI Calculator</h2>
         <div className="calculator-input">
           <label>Investment Amount ($):</label>
-          <input type="number" value={investmentInput} onChange={handleInvestmentChange} />
+          <input
+            type="number"
+            value={investmentInput}
+            onChange={handleInvestmentChange}
+          />
         </div>
         <div className="calculator-input">
           <label>Expected Return Rate (%):</label>
-          <input type="number" value={returnRate} onChange={handleReturnRateChange} />
+          <input
+            type="number"
+            value={returnRate}
+            onChange={handleReturnRateChange}
+          />
         </div>
-        <h3>Projected Return: <span className="return-result">${calculateReturn()}</span></h3>
+        <h3>
+          Projected Return:{" "}
+          <span className="return-result">${calculateReturn()}</span>
+        </h3>
       </div>
 
       <div className="investor-list">
@@ -66,7 +101,9 @@ const InvestorHub = () => {
                 <h3>{investor.name}</h3>
                 <p>Industry: {investor.industry}</p>
                 <p>Investment Range: {investor.investmentRange}</p>
-                <p>Notable Investments: {investor.notableInvestments.join(', ')}</p>
+                <p>
+                  Notable Investments: {investor.notableInvestments.join(", ")}
+                </p>
               </div>
             ))
           ) : (

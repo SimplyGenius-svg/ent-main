@@ -1,84 +1,80 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './styles/authStyles.css';
-import { db } from './firebase';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./styles/authStyles.css";
+import { db } from "./actions/firebase";
 import { collection, addDoc } from "firebase/firestore"; // Import Firestore functions
-import { doc, setDoc } from 'firebase/firestore'; // Import Firestore functions
-import { auth } from './firebase'
-
+import { doc, setDoc } from "firebase/firestore"; // Import Firestore functions
+import { auth } from "./actions/firebase";
 
 const interestOptions = [
-  { label: 'Animals', emoji: '🐾' },
-  { label: 'Music', emoji: '🎶' },
-  { label: 'Sports', emoji: '⚽' },
-  { label: 'Outdoor activities', emoji: '🥾' },
-  { label: 'Dancing', emoji: '💃' },
-  { label: 'Healthy life', emoji: '🥗' },
-  { label: 'Gym & Fitness', emoji: '🏋️' },
-  { label: 'Foreign culture', emoji: '🌍' },
-  { label: 'Gaming', emoji: '🎮' },
-  { label: 'Art', emoji: '🎨' },
-  { label: 'Writing', emoji: '✍️' },
-  { label: 'Ceramics', emoji: '🏺' },
-  { label: 'Cosmos', emoji: '🌌' },
-  { label: 'Architecture', emoji: '🏛️' },
-  { label: 'Food', emoji: '🍽️' },
-  { label: 'Planting', emoji: '🌱' },
-  { label: 'Movie', emoji: '🎬' },
-  { label: 'Science', emoji: '🔬' },
-  { label: 'Camping', emoji: '🏕️' },
-  { label: 'History', emoji: '🏺' },
-  { label: 'Design', emoji: '📐' },
-  { label: 'Photography', emoji: '📷' },
-  { label: 'Spirituality', emoji: '🔮' },
-  { label: 'Yoga', emoji: '🧘' },
-  { label: 'Book', emoji: '📚' },
-  { label: 'Cooking', emoji: '🍳' }
+  { label: "Animals", emoji: "🐾" },
+  { label: "Music", emoji: "🎶" },
+  { label: "Sports", emoji: "⚽" },
+  { label: "Outdoor activities", emoji: "🥾" },
+  { label: "Dancing", emoji: "💃" },
+  { label: "Healthy life", emoji: "🥗" },
+  { label: "Gym & Fitness", emoji: "🏋️" },
+  { label: "Foreign culture", emoji: "🌍" },
+  { label: "Gaming", emoji: "🎮" },
+  { label: "Art", emoji: "🎨" },
+  { label: "Writing", emoji: "✍️" },
+  { label: "Ceramics", emoji: "🏺" },
+  { label: "Cosmos", emoji: "🌌" },
+  { label: "Architecture", emoji: "🏛️" },
+  { label: "Food", emoji: "🍽️" },
+  { label: "Planting", emoji: "🌱" },
+  { label: "Movie", emoji: "🎬" },
+  { label: "Science", emoji: "🔬" },
+  { label: "Camping", emoji: "🏕️" },
+  { label: "History", emoji: "🏺" },
+  { label: "Design", emoji: "📐" },
+  { label: "Photography", emoji: "📷" },
+  { label: "Spirituality", emoji: "🔮" },
+  { label: "Yoga", emoji: "🧘" },
+  { label: "Book", emoji: "📚" },
+  { label: "Cooking", emoji: "🍳" },
   // Add more interests here
 ];
 
 const CreateProfile = () => {
-  const [name, setName] = useState('');
-  const [college, setCollege] = useState('');
+  const [name, setName] = useState("");
+  const [college, setCollege] = useState("");
   const [selectedInterests, setSelectedInterests] = useState([]);
-  const [role, setRole] = useState('');
-  const [error, setError] = useState('');
-  
+  const [role, setRole] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
-  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  if (!name || !college || selectedInterests.length === 0 || !role) {
-    setError('All fields are required!');
-    return;
-  }
-
-  try {
-    const user = auth.currentUser; // Get the current authenticated user
-    if (user) {
-      // Create or update the document with the user's UID in Firestore
-      await setDoc(doc(db, 'users', user.uid), {
-        name,
-        college,
-        interests: selectedInterests,
-        role,
-      });
-
-      console.log('Profile created successfully!');
-      setError('');
-      navigate('/dashboard'); // Redirect to the dashboard after profile creation
-    } else {
-      setError('No authenticated user');
+    if (!name || !college || selectedInterests.length === 0 || !role) {
+      setError("All fields are required!");
+      return;
     }
-  } catch (error) {
-    console.error('Error creating profile:', error);
-    setError('Error creating profile: ' + error.message);
-  }
-};
 
+    try {
+      const user = auth.currentUser; // Get the current authenticated user
+      if (user) {
+        // Create or update the document with the user's UID in Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          name,
+          college,
+          interests: selectedInterests,
+          role,
+        });
+
+        console.log("Profile created successfully!");
+        setError("");
+        navigate("/dashboard"); // Redirect to the dashboard after profile creation
+      } else {
+        setError("No authenticated user");
+      }
+    } catch (error) {
+      console.error("Error creating profile:", error);
+      setError("Error creating profile: " + error.message);
+    }
+  };
 
   const handleInterestChange = (interest) => {
     if (selectedInterests.includes(interest)) {
@@ -117,7 +113,9 @@ const handleSubmit = async (e) => {
               <option value="Business">Business</option>
               <option value="Engineering">Engineering</option>
               <option value="Chemistry">Chemistry</option>
-              <option value="Computing, Data Science & Society">Computing, Data Science & Society</option>
+              <option value="Computing, Data Science & Society">
+                Computing, Data Science & Society
+              </option>
               <option value="Education">Education</option>
               <option value="Environmental Design">Environmental Design</option>
               <option value="Information">Information</option>
@@ -139,7 +137,9 @@ const handleSubmit = async (e) => {
               {interestOptions.map((interest, index) => (
                 <div
                   key={index}
-                  className={`interest-item ${selectedInterests.includes(interest.label) ? 'selected' : ''}`}
+                  className={`interest-item ${
+                    selectedInterests.includes(interest.label) ? "selected" : ""
+                  }`}
                   onClick={() => handleInterestChange(interest.label)}
                 >
                   {interest.emoji} {interest.label}
@@ -163,7 +163,9 @@ const handleSubmit = async (e) => {
             </select>
           </div>
 
-          <button type="submit" className="submit-button">Create Profile</button>
+          <button type="submit" className="submit-button">
+            Create Profile
+          </button>
         </form>
       </div>
     </div>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'; // For redirection
+import { useNavigate } from "react-router-dom"; // For redirection
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "./firebase"; // Import Firebase authentication and database
-import './styles/authStyles.css';
+import { auth, db } from "./actions/firebase"; // Import Firebase authentication and database
+import "./styles/authStyles.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -13,9 +13,13 @@ const SignUp = () => {
   const handleSignUp = async (event) => {
     event.preventDefault();
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       // User created successfully, now redirect to the profile creation page
-      navigate('/create-profile');
+      navigate("/create-profile");
     } catch (err) {
       setError(err.message); // Show error on the UI if something goes wrong
       console.error("Error signing up:", err.message);
@@ -29,9 +33,19 @@ const SignUp = () => {
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSignUp}>
           <label>Email</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
           <label>Password</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
           <button type="submit">Sign Up</button>
         </form>
         <p>

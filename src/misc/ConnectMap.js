@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { collection, getDocs } from 'firebase/firestore'; // Import Firestore methods
-import { db } from '../firebase'; // Import your firebase configuration
-import './styles/ConnectMap.css';
+import React, { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { collection, getDocs } from "firebase/firestore"; // Import Firestore methods
+import { db } from "."./actions/firebase""; // Import your firebase configuration
+import "./styles/ConnectMap.css";
 
 const ConnectMap = () => {
   const mountRef = useRef(null);
@@ -13,9 +13,9 @@ const ConnectMap = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const usersCollection = collection(db, 'users'); // Assume 'users' is your Firestore collection
+        const usersCollection = collection(db, "users"); // Assume 'users' is your Firestore collection
         const usersSnapshot = await getDocs(usersCollection);
-        const usersList = usersSnapshot.docs.map(doc => {
+        const usersList = usersSnapshot.docs.map((doc) => {
           const userData = doc.data();
           // Assign random lat/lon for each user
           const randomLat = Math.random() * 180 - 90; // Random latitude between -90 and 90
@@ -86,10 +86,12 @@ const ConnectMap = () => {
 
     // Load gradient texture
     const textureLoader = new THREE.TextureLoader();
-    const gradientTexture = textureLoader.load('/path-to-gradient-placeholder.png'); // Placeholder gradient image
+    const gradientTexture = textureLoader.load(
+      "/path-to-gradient-placeholder.png"
+    ); // Placeholder gradient image
 
     // Add user markers to the globe with random lat/lon
-    users.forEach(user => {
+    users.forEach((user) => {
       const { lat, lon, name } = user; // lat and lon now randomly assigned
 
       const userPosition = latLonToVector3(lat, lon);
@@ -127,7 +129,13 @@ const ConnectMap = () => {
     };
   }, [users]); // Depend on users to re-render when user data is fetched
 
-  return <div className="connect-map-container" ref={mountRef} style={{ width: '100%', height: '100vh' }}></div>;
+  return (
+    <div
+      className="connect-map-container"
+      ref={mountRef}
+      style={{ width: "100%", height: "100vh" }}
+    ></div>
+  );
 };
 
 export default ConnectMap;

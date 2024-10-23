@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { auth, db, storage } from "./firebase";
+import { auth, db, storage } from "./actions/firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import './styles/EditProfile.css';
+import "./styles/EditProfile.css";
 
 const EditProfile = ({ user, onClose, onProfileUpdate }) => {
   const [displayName, setDisplayName] = useState("");
@@ -46,7 +46,7 @@ const EditProfile = ({ user, onClose, onProfileUpdate }) => {
         expertise,
         role,
         major, // Include Major in updated profile
-        profilePic: profilePicUrl
+        profilePic: profilePicUrl,
       };
       onProfileUpdate(updatedUser); // Call the callback with updated user data
       alert("Profile updated successfully");
@@ -86,7 +86,9 @@ const EditProfile = ({ user, onClose, onProfileUpdate }) => {
       <div className="edit-profile-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2>Edit Profile</h2>
-          <button className="close-button" onClick={onClose}>X</button>
+          <button className="close-button" onClick={onClose}>
+            X
+          </button>
         </div>
         <div className="edit-profile-container">
           <div className="form-group">
@@ -131,7 +133,7 @@ const EditProfile = ({ user, onClose, onProfileUpdate }) => {
             </select>
           </div>
           <div className="form-group">
-            <label>Major</label>  {/* Major field added */}
+            <label>Major</label> {/* Major field added */}
             <input
               type="text"
               value={major}
@@ -141,14 +143,18 @@ const EditProfile = ({ user, onClose, onProfileUpdate }) => {
           <div className="form-group">
             <label>Profile Picture</label>
             <input type="file" onChange={handleProfilePicChange} />
-            <button onClick={handleUploadProfilePic} className="upload-button">Upload Picture</button>
+            <button onClick={handleUploadProfilePic} className="upload-button">
+              Upload Picture
+            </button>
           </div>
           {profilePicUrl && (
             <div className="profile-pic-preview">
               <img src={profilePicUrl} alt="Profile Preview" />
             </div>
           )}
-          <button className="save-button" onClick={handleUpdateProfile}>Save Changes</button>
+          <button className="save-button" onClick={handleUpdateProfile}>
+            Save Changes
+          </button>
         </div>
       </div>
     </div>

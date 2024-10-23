@@ -1,10 +1,10 @@
 // src/UserProfile.js
 
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { getDoc, doc } from 'firebase/firestore';
-import { db } from './firebase';
-import './styles/UserProfile.css'; // Create this CSS file for styling
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "./actions/firebase";
+import "./styles/UserProfile.css"; // Create this CSS file for styling
 
 const UserProfile = () => {
   const { uid } = useParams();
@@ -14,7 +14,7 @@ const UserProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userDocRef = doc(db, 'users', uid);
+        const userDocRef = doc(db, "users", uid);
         const userSnapshot = await getDoc(userDocRef);
         if (userSnapshot.exists()) {
           setUserData(userSnapshot.data());
@@ -41,9 +41,13 @@ const UserProfile = () => {
 
   return (
     <div className="user-profile-container">
-      <img src={userData.profilePic || 'default-profile.png'} alt="Profile" className="profile-pic" />
+      <img
+        src={userData.profilePic || "default-profile.png"}
+        alt="Profile"
+        className="profile-pic"
+      />
       <h1>{userData.displayName}</h1>
-      <p>Major: {userData.major || 'Not provided'}</p>
+      <p>Major: {userData.major || "Not provided"}</p>
       {/* Add more user details here as needed */}
     </div>
   );
