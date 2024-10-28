@@ -255,7 +255,7 @@ const Dashboard = () => {
       <div className="new-dashboard-container">
     {/* Back to Homepage Button */}
     <button className="back-home-btn" onClick={goToHomepage}>
-      Back to Homepage
+      EntreLink
     </button>
     
     {/* Rest of your dashboard code */}
