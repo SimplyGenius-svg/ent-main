@@ -3,7 +3,7 @@ import './styles/styles.css';
 
 import gyanImg from './gyan2.jpg';
 import andrewImg from './andrew.png';
-import aaruImg from './aaru.jpg';
+import kayvonImg from './kayvon.jpg';
 
 const HomePage = () => {
   const scrollToTeamSection = () => {
@@ -92,9 +92,9 @@ const HomePage = () => {
             <p>Chief Technology Officer</p>
           </div>
           <div className="team-member">
-          <img src={aaruImg} alt="Aarushi Thaker" className="team-photo" />
-            <h3>Aarushi Thaker</h3>
-            <p>Chief Marketing Officer</p>
+          <img src={kayvonImg} alt="Kayvon Tahmassebi" className="team-photo" />
+            <h3>Kayvon Tahmassebi</h3>
+            <p>Chief Partnerships Officer</p>
           </div>
         </div>
       </section>
