@@ -1,8 +1,8 @@
 .founder-resources-container {
   padding: 20px;
-  background-color: #f8f8ff;
+  background-color: #f1f8ff;
   border-radius: 15px;
-  max-width: 1200px;
+  max-width: 3000px; 
   margin: 0 auto;
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.1);
 }
@@ -15,7 +15,7 @@
 }
 
 .search-bar {
-  width: 60%;
+  width: 80%;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -47,8 +47,8 @@
 
 .resource-card-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 40px; 
 }
 
 .resource-card {
@@ -95,3 +95,47 @@
   background-color: #218838;
 }
 
+/*email section*/
+.email-templates-section {
+  padding-top: 20px;
+}
+
+.email-templates-section h3 {
+  margin-top: 0;
+}
+
+.email-template-card {
+  background-color: #e8f0fe;
+  border: 1px solid #007bff;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.email-template-card:hover {
+  background-color: #d0e2ff;
+}
+
+.view-template-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-template-btn:hover {
+  background-color: #0056b3;
+}
+
+.resource-card.expanded {
+  background-color: #f0f8ff; /* Different color for expanded view */
+  padding: 20px;
+  transition: max-height 0.3s ease;
+  max-height: 500px; /* Set max height for expansion */
+  overflow: auto;
+}

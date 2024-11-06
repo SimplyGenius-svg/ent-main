@@ -7,6 +7,7 @@ import CreateProfile from './CreateProfile';
 import Dashboard from './Dashboard.js';
 import ProtectedRoute from './ProtectedRoute';
 import FounderResources from './FounderResources'; // Founder Resources component
+import EmailTemplates from './EmailTemplates'; //Founder resources - email templates - testing
 import BusinessHealthDashboard from './BusinessHealthDashboard'; // Business Health Dashboard component
 import AIChatbot from './AIChatbot'; // AI Chatbot component
 import ApolloConnections from './ApolloConnections'; // Apollo Connections component
@@ -37,6 +38,16 @@ function App() {
           element={
             <ProtectedRoute>
               <FounderResources />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* New Routes for additional features */}
+        <Route
+          path="/email-templates"
+          element={
+            <ProtectedRoute>
+              <EmailTemplates />
             </ProtectedRoute>
           }
         />
