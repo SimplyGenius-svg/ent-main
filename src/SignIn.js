@@ -1,19 +1,24 @@
 import React, { useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { setPersistence, signInWithEmailAndPassword, browserLocalPersistence } from "firebase/auth";
 import { useNavigate } from 'react-router-dom';
 import { auth } from "./firebase";
 import './styles/authStyles.css';
+
 const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      // Set persistence to remember session
+      await setPersistence(auth, browserLocalPersistence);
+
+      // Sign in the user
+      await signInWithEmailAndPassword(auth, email, password);
+
       // Redirect to dashboard after successful sign-in
       navigate('/dashboard');
     } catch (err) {
@@ -23,7 +28,7 @@ const SignIn = () => {
   };
 
   return (
-    <div className="auth-container" style={{ backgroundColor: "red" }}>
+    <div className="auth-container">
       <div className="auth-box">
         <h2>Sign In</h2>
         {error && <p className="error-message">{error}</p>}
