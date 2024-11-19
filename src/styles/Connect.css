@@ -1,0 +1,73 @@
+/* Container for the swipe interface */
+.connect-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  }
+  
+  /* Profile card styling */
+  .profile-card {
+    width: 320px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Profile picture styling */
+  .profile-card img.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 3px solid #10B981;
+  }
+  
+  /* Profile name styling */
+  .profile-card h3 {
+    font-size: 22px;
+    color: #1f2937;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  
+  /* Profile description styling */
+  .profile-card p {
+    font-size: 16px;
+    color: #4B5563;
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  
+  /* Video styling for elevator pitch */
+  .profile-card video {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+    outline: none;
+  }
+  
+  /* Message when there are no more profiles */
+  .out-of-cards {
+    text-align: center;
+    font-size: 18px;
+    color: #6b7280;
+    font-weight: 500;
+    padding: 20px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  

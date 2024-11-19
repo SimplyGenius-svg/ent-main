@@ -22,6 +22,14 @@
       "buttonText": "View",
       "downloadLink": "https://your-link.com/growth-hacking",
       "icon": "path/to/icon3.png"
+    },
+    {
+      "title": "Email Templates",
+      "description": "Initial Email Template To Send To Investors",
+      "category": "Email Templates",
+      "buttonText": "View",
+      "downloadLink": "https://docs.google.com/document/d/12lbJMQ1LAvoR_RuTZGVtyWUOfnKrUlB_6yxCQpx34_I/edit?usp=sharing",
+      "icon": "path/to/icon3.png"
     }
   ]
   

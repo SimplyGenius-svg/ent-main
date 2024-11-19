@@ -1,0 +1,148 @@
+.tinder-creation-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #DFEBF6, #E6E6E6); /* Bluish gradient */
+    padding: 40px;
+    max-width: 650px;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .tinder-creation-container h2 {
+    font-size: 28px;
+    color: #29353C;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 25px;
+  }
+  
+  .profile-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .profile-form label {
+    font-weight: 500;
+    color: #3A4A58;
+    font-size: 15px;
+    margin-bottom: 5px;
+  }
+  
+  .profile-form input[type="file"],
+  .profile-form textarea {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 1px solid #B0C4DE;
+    background-color: #F4F7FB;
+    color: #29353C;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    outline: none;
+  }
+  
+  .profile-form input[type="file"]:hover,
+  .profile-form textarea:hover {
+    border-color: #5B9CE6;
+  }
+  
+  .profile-form textarea {
+    resize: vertical;
+    height: 100px;
+  }
+  
+  .profile-form button {
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background: linear-gradient(135deg, #3A4A58, #2E3B4E); /* Dark gradient button */
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 6px 12px rgba(42, 63, 81, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  
+  .profile-form button:hover {
+    background: linear-gradient(135deg, #44576D, #2E3B4E);
+    box-shadow: 0 8px 16px rgba(42, 63, 81, 0.5);
+  }
+  
+  .profile-form button:active {
+    transform: scale(0.98);
+  }
+  
+  .profile-form button:disabled {
+    background: #9CA3AF;
+    cursor: not-allowed;
+  }
+  
+  /* Custom File Upload Button */
+  input[type="file"]::file-selector-button {
+    padding: 8px 14px;
+    background-color: #3A4A58;
+    border: none;
+    color: #FFFFFF;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  input[type="file"]::file-selector-button:hover {
+    background-color: #44576D;
+  }
+
+  
+  /* Industry Options Styling */
+.industry-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .industry-option {
+    display: flex;
+    align-items: center;
+    background-color: #f4f5f7;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+  }
+  
+  .industry-option:hover {
+    background-color: #e2e8f0;
+  }
+  
+  .industry-option input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: #5B9CE6;
+  }
+  
+
+  /* Animation Styling */
+.animate-fold-up {
+    animation: foldUp 1.5s forwards ease-in-out;
+  }
+  
+  @keyframes foldUp {
+    0% {
+      transform: scale(1) translateY(0) translateX(0);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(0.5) translateY(-50px) translateX(100px);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(0) translateY(-300px) translateX(600px);
+      opacity: 0;
+    }
+  }
+  

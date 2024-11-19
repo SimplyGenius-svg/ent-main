@@ -1,59 +1,80 @@
-// src/Connect.js
-
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { query, collection, where, getDocs } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
+import TinderCard from 'react-tinder-card';
 import { db, auth } from './firebase';
+import { collection, getDocs, doc, setDoc, getDoc } from 'firebase/firestore';
 import './styles/Connect.css';
 
-
-
 const Connect = () => {
-  const { uid } = useParams();
-  const [status, setStatus] = useState('');
+  const [profiles, setProfiles] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
-  const handleSendConnectionRequest = async () => {
-    if (uid === auth.currentUser.uid) {
-      alert("You can't connect with yourself.");
-      return;
-    }
+  // Fetch profiles from Firestore
+  useEffect(() => {
+    const fetchProfiles = async () => {
+      const profilesCollection = await getDocs(collection(db, 'profiles'));
+      const profilesData = profilesCollection.docs
+        .map(doc => ({ id: doc.id, ...doc.data() }))
+        .filter(profile => profile.uid !== auth.currentUser.uid); // Exclude the current user
+      setProfiles(profilesData);
+    };
 
-    try {
-      // Check if a connection request already exists
-      const q = query(
-        collection(db, 'connections'),
-        where('from', '==', auth.currentUser.uid),
-        where('to', '==', uid)
-      );
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        alert('Connection request already sent.');
-        return;
+    const fetchCurrentUser = async () => {
+      const userDoc = await getDoc(doc(db, 'profiles', auth.currentUser.uid));
+      if (userDoc.exists()) {
+        setCurrentUser(userDoc.data());
       }
+    };
 
-      const connectionData = {
+    fetchProfiles();
+    fetchCurrentUser();
+  }, []);
+
+  // Handle swipes for liking or passing on a profile
+  const onSwipe = async (direction, swipedProfile) => {
+    if (direction === 'right') {
+      // Like action
+      await setDoc(doc(db, 'likes', `${auth.currentUser.uid}_${swipedProfile.uid}`), {
         from: auth.currentUser.uid,
-        to: uid,
-        status: 'pending',
-        timestamp: new Date(),
-      };
+        to: swipedProfile.uid,
+      });
 
-      // Store the request in connections
-      await addDoc(collection(db, 'connections'), connectionData);
-
-      setStatus('Connection request sent!');
-    } catch (error) {
-      console.error('Error sending connection request:', error);
-      setStatus('Failed to send connection request.');
+      // Check for a match
+      const reciprocalLikeDoc = await getDoc(doc(db, 'likes', `${swipedProfile.uid}_${auth.currentUser.uid}`));
+      if (reciprocalLikeDoc.exists()) {
+        // Match found, store in the 'matches' collection
+        const matchId = [auth.currentUser.uid, swipedProfile.uid].sort().join('_');
+        await setDoc(doc(db, 'matches', matchId), {
+          users: [auth.currentUser.uid, swipedProfile.uid],
+          createdAt: new Date(),
+        });
+        alert(`You matched with ${swipedProfile.name}!`);
+      }
     }
   };
 
+  // Out of cards message
+  if (profiles.length === 0) {
+    return <div className="out-of-cards">No more profiles to show</div>;
+  }
+
   return (
     <div className="connect-container">
-      <h1>Connect with User</h1>
-      <p>Are you sure you want to connect with this user?</p>
-      <button onClick={handleSendConnectionRequest}>Send Request</button>
-      {status && <p className="status-message">{status}</p>}
+      {profiles.map((profile) => (
+        <TinderCard
+          key={profile.id}
+          onSwipe={(dir) => onSwipe(dir, profile)}
+          preventSwipe={['up', 'down']}
+        >
+          <div className="profile-card">
+            <img src={profile.profilePic || 'default-profile.png'} alt={profile.name} className="profile-pic" />
+            <h3>{profile.name}</h3>
+            <p>{profile.description}</p>
+            {profile.video && (
+              <video controls src={profile.video} width="100%" />
+            )}
+          </div>
+        </TinderCard>
+      ))}
     </div>
   );
 };
