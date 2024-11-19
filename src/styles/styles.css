@@ -298,7 +298,7 @@ body::after {
   transition: transform var(--transition-speed);
   mix-blend-mode: overlay;
   filter: blur(80px);
-  animation: blotchMove 5s infinite alternate ease-in-out; /* Reduced duration for faster movement */
+  animation: blotchMove 4s infinite alternate ease-in-out; /* Reduced duration for faster movement */
 }
 
 /* Position and animate second blotch */
@@ -306,7 +306,7 @@ body::after {
   left: 60%;
   top: 40%;
   transform: translate(-50%, -50%);
-  animation-duration: 5s; /* Faster movement for second blotch */
+  animation-duration: 4s; /* Faster movement for second blotch */
 }
 
 /* Blotch Animation with faster opacity transition */

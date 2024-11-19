@@ -1,48 +1,138 @@
-.connect-map-container {
+/* General Styles */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Sora', sans-serif;
+  background-color: #000000;
+  color: #ffffff;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: #000000;
+  padding: 20px;
+  width: 200px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+}
+
+.profile-container {
+  text-align: center;
+}
+
+.profile-pic {
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.1);
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.main-content {
+  margin-left: 220px;
+  padding: 20px;
+  width: calc(100% - 220px);
+  overflow-y: auto;
+  background-color: #1a1a1a;
+}
+
+.dashboard-view {
+  padding: 20px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 30px;  /* Added spacing below the "Dashboard" title */
+}
+
+.widget-container {
+  display: flex;
+  justify-content: space-between;  /* Widgets will sit side by side */
+  gap: 20px;  /* Added space between the widgets */
+}
+
+.widget {
+  background-color: #333333;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);  /* Added shadow for depth */
+  width: 48%;  /* Widgets will take half of the available width each */
+  transition: transform 0.3s ease;
+}
+
+.widget:hover {
+  transform: translateY(-5px);  /* Animation on hover */
+  box-shadow: 0 10px 20px rgba(0, 255, 204, 0.4);  /* Bright shadow on hover */
+}
+
+.widget ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.widget ul li {
+  margin-bottom: 10px;
+  color: #00FFCC;  /* Added vibrant color for text */
+}
+
+.widget h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #00B3FF;  /* Added color to widget headings */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .widget-container {
+    flex-direction: column;
+  }
+
+  .widget {
     width: 100%;
-    height: 100vh;
-    background: radial-gradient(circle at 50% 50%, #111827, #0a0c12 70%);
-    overflow: hidden;
+  }
+
+  .main-content {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
     position: relative;
   }
-  
-  .connect-map-container canvas {
-    display: block;
-  }
-  
-  
-  .connect-map-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background: radial-gradient(circle at 50% 50%, rgba(0, 255, 221, 0.1), transparent);
-    z-index: 1;
-  }
-  
-  .connect-map-container::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 255, 221, 0.3), transparent);
-    z-index: 1;
-    transform: translate(-50%, -50%);
-    animation: pulse 3s infinite ease-in-out;
-  }
-  
-  @keyframes pulse {
-    0%, 100% {
-      transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-  }
-  
+}
